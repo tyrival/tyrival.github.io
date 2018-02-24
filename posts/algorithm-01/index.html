@@ -3,20 +3,22 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Git基本命令集 | Tyrival</title>
+    <title>算法-01：聚类算法 | Tyrival</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="本文介绍运用git将代码同步到github上的基本方法。">
-<meta name="keywords" content="git">
+    <meta name="description" content="聚类算法，是把距离作为特征，通过自下而上的迭代方式（距离对比），快速地把一群样本分成几个类别的过程。">
+<meta name="keywords" content="algorithm">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Git基本命令集">
-<meta property="og:url" content="http://tyrival.github.io/posts/git-base/index.html">
+<meta property="og:title" content="算法-01：聚类算法">
+<meta property="og:url" content="http://tyrival.github.io/posts/algorithm-01/index.html">
 <meta property="og:site_name" content="Tyrival">
-<meta property="og:description" content="本文介绍运用git将代码同步到github上的基本方法。">
+<meta property="og:description" content="聚类算法，是把距离作为特征，通过自下而上的迭代方式（距离对比），快速地把一群样本分成几个类别的过程。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-12-08T09:21:03.587Z">
+<meta property="og:image" content="http://tyrival.github.io/posts/algorithm-01/01.jpg">
+<meta property="og:updated_time" content="2018-02-24T05:57:50.169Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Git基本命令集">
-<meta name="twitter:description" content="本文介绍运用git将代码同步到github上的基本方法。">
+<meta name="twitter:title" content="算法-01：聚类算法">
+<meta name="twitter:description" content="聚类算法，是把距离作为特征，通过自下而上的迭代方式（距离对比），快速地把一群样本分成几个类别的过程。">
+<meta name="twitter:image" content="http://tyrival.github.io/posts/algorithm-01/01.jpg">
     
 
     
@@ -185,7 +187,7 @@
 </aside>
 
             
-            <section id="main"><article id="post-git-base" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-algorithm-01" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -193,7 +195,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            Git基本命令集
+            算法-01：聚类算法
         </h1>
     
 
@@ -202,8 +204,8 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/posts/git-base/">
-            <time datetime="2016-11-23T06:06:36.000Z" itemprop="datePublished">2016-11-23</time>
+        <a href="/posts/algorithm-01/">
+            <time datetime="2018-02-24T05:31:51.912Z" itemprop="datePublished">2018-02-24</time>
         </a>
     </div>
 
@@ -211,13 +213,13 @@
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/工具/">工具</a>
+        <a class="article-category-link" href="/categories/算法/">算法</a>
     </div>
 
                         
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/git/">git</a>
+        <a class="tag-link" href="/tags/algorithm/">algorithm</a>
     </div>
 
                     </div>
@@ -228,41 +230,9 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>本文介绍运用git将代码同步到github上的基本方法。<br><a id="more"></a></p>
-<ul>
-<li><p>检验电脑上是否存在  ssh keys.</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/.ssh</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>创建新的ssh keys  </p>
-</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ssh-keygen -t rsa -C <span class="string">"tyrival@qq.com”</span></span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>输入两次密码 tyrival1019（与Github一致）</li>
-<li>进入C:\User\用户名.ssh，打开 id_rsa.pub，将其作为一个SSH key新建到Github中的个人信息中</li>
-<li><p>配置用户名、邮箱（与github保持一致）</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git<span class="built_in"> config </span>--global user.name<span class="string">"tyrival”</span></span><br><span class="line"><span class="string">$ git config --global user.email"</span>tyrival@qq.com”</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在Github上新建项目，并复制其ssh地址</p>
-</li>
-<li><p>进入项目文件夹，初始化仓库.  </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git init</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>添加所有文件到仓库.  </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> D:/workspace/iflat/iflat</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git add \*</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>提交.  </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git commit -m <span class="string">"commit by Tyrival”</span></span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>远程同步到服务器</p>
-<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote <span class="keyword">add</span><span class="bash"> origin git@github.com:tyrival/iFlat.git</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>第5步如果报“fatal: remote origin already exists.”</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git remote rm origin</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git remote add origin git@github.com:tyrival/iFlat.git</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>推送到服务器</p>
-<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">push</span> -u <span class="built_in">origin</span> master</span><br></pre></td></tr></table></figure></li>
-</ul>
+            <p><strong>聚类算法</strong>，是把距离作为特征，通过自下而上的迭代方式（距离对比），快速地把一群样本分成几个类别的过程。</p>
+<a id="more"></a>
+<p><img src="01.jpg" alt=""></p>
 
         
         </div>
@@ -273,7 +243,7 @@
 
 </div>
 
-    <a data-url="http://tyrival.github.io/posts/git-base/" data-id="cje0ybmqb000ikea7fghjzdi9" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://tyrival.github.io/posts/algorithm-01/" data-id="cje0ybmpn0001kea7rt0mp46j" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -348,15 +318,11 @@
         
 <nav id="article-nav">
     
-        <a href="/posts/dom/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    DOM操作常用方法
-                
-            </div>
-        </a>
     
+        <a href="/posts/swift-01-base/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Swift3 - 01：基础语法</div>
+        </a>
     
 </nav>
 
