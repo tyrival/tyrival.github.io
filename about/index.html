@@ -3,20 +3,16 @@
 <head>
     <meta charset="utf-8">
     
-    <title>DOM操作常用方法 | Tyrival</title>
+    <title>关于 | Tyrival</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="基于原生js对DOM对象进行操作的部分方法，如查找兄弟元素或子元素等，以及对DOM元素的所有属性或特定属性进行监听的方法。">
-<meta name="keywords" content="javascript">
-<meta property="og:type" content="article">
-<meta property="og:title" content="DOM操作常用方法">
-<meta property="og:url" content="http://tyrival.github.io/posts/dom/index.html">
+    <meta property="og:type" content="website">
+<meta property="og:title" content="关于">
+<meta property="og:url" content="http://tyrival.github.io/about/index.html">
 <meta property="og:site_name" content="Tyrival">
-<meta property="og:description" content="基于原生js对DOM对象进行操作的部分方法，如查找兄弟元素或子元素等，以及对DOM元素的所有属性或特定属性进行监听的方法。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-06-19T06:15:30.000Z">
+<meta property="og:updated_time" content="2017-06-08T07:58:59.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="DOM操作常用方法">
-<meta name="twitter:description" content="基于原生js对DOM对象进行操作的部分方法，如查找兄弟元素或子元素等，以及对DOM元素的所有属性或特定属性进行监听的方法。">
+<meta name="twitter:title" content="关于">
     
 
     
@@ -183,7 +179,7 @@
 </aside>
 
             
-            <section id="main"><article id="post-dom" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="page-" class="article article-type-page" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -191,34 +187,10 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            DOM操作常用方法
+            关于
         </h1>
     
 
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/posts/dom/">
-            <time datetime="2016-11-23T08:14:43.000Z" itemprop="datePublished">2016-11-23</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/前端/">前端</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/javascript/">javascript</a>
-    </div>
-
-                    </div>
                 
             </header>
         
@@ -226,9 +198,7 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>基于原生js对DOM对象进行操作的部分方法，如查找兄弟元素或子元素等，以及对DOM元素的所有属性或特定属性进行监听的方法。<br><a id="more"></a><br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line">var Iflat = Iflat || &#123;&#125;;</span><br><span class="line">Iflat.DOM = &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 附加监听器，监听DOM元素的属性变化</span><br><span class="line">     * @param ele 附加监听器的DOM元素</span><br><span class="line">     * @param attr 监听的属性，!attr == <span class="literal">true</span> 时，监听所有属性</span><br><span class="line">     * @param callback 属性变化后执行函数，参数：ele - 监听的DOM元素对象</span><br><span class="line">     */</span><br><span class="line">    addAttributeListener: <span class="function"><span class="keyword">function</span> <span class="params">(ele, attr, callback)</span></span> &#123;</span><br><span class="line">        // 判断浏览器是否支持MutationObserver</span><br><span class="line">        var MutationObserver = window.MutationObserver </span><br><span class="line">        		|| window.WebKitMutationObserver </span><br><span class="line">        		|| window.MozMutationObserver;</span><br><span class="line">        var observeMutationSupport = !!MutationObserver;</span><br><span class="line">        <span class="keyword">if</span> (observeMutationSupport) &#123;</span><br><span class="line">            // 创建观察者对象</span><br><span class="line">            var observer = new MutationObserver(<span class="function"><span class="keyword">function</span> <span class="params">(mutations)</span></span> &#123;</span><br><span class="line">                mutations.forEach(<span class="function"><span class="keyword">function</span> <span class="params">(mutation)</span></span> &#123;</span><br><span class="line">                    // 定义回调函数时，如果监控属性参数为非，或修改的属性与需要监控的属性相等时，调用回调函数</span><br><span class="line">                    <span class="keyword">if</span> (callback) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (!attr || (attr &amp;&amp; mutation.attributeName == attr)) &#123;</span><br><span class="line">                            callback(mutation.target);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;);</span><br><span class="line">            // 配置观察选项:</span><br><span class="line">            var <span class="built_in">config</span> = &#123;attributes: <span class="literal">true</span>&#125;</span><br><span class="line">            // 传入目标节点和观察选项</span><br><span class="line">            observer.observe(ele, <span class="built_in">config</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            // 回调函数</span><br><span class="line">            var onChange = <span class="function"><span class="keyword">function</span> <span class="params">(event)</span></span> &#123;</span><br><span class="line">                // 定义回调函数时，如果监控属性参数为非，或修改的属性与需要监控的属性相等时，调用回调函数</span><br><span class="line">                <span class="keyword">if</span> (callback) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (!attr || (attr &amp;&amp; event.attrName == attr)) &#123;</span><br><span class="line">                        callback(event.target);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            <span class="keyword">if</span> (ele.addEventListener) &#123;</span><br><span class="line">                // Firefox, Opera <span class="keyword">and</span> Safari</span><br><span class="line">                ele.addEventListener(<span class="string">'DOMAttrModified'</span>, onChange, <span class="literal">false</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ele.attachEvent) &#123;</span><br><span class="line">                // 旧版Internet Explorer</span><br><span class="line">                ele.attachEvent(<span class="string">'onpropertychange'</span>, onChange);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    /* 参数DOM元素的前一个元素 *／</span><br><span class="line">    previousSibling: <span class="function"><span class="keyword">function</span> <span class="params">(ele)</span></span> &#123;</span><br><span class="line">        <span class="keyword">while</span> ((ele = ele.previousSibling)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!this.isIgnorable(ele))</span><br><span class="line">                <span class="keyword">return</span> ele;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> null;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    /* 参数DOM元素的后一个元素 *／</span><br><span class="line">    nextSibling: <span class="function"><span class="keyword">function</span> <span class="params">(ele)</span></span> &#123;</span><br><span class="line">        <span class="keyword">while</span> ((ele = ele.nextSibling)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!this.isIgnorable(ele))</span><br><span class="line">                <span class="keyword">return</span> ele;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> null;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    /* 参数DOM元素的第一个子元素 *／</span><br><span class="line">    firstChild: <span class="function"><span class="keyword">function</span> <span class="params">(ele)</span></span> &#123;</span><br><span class="line">        <span class="keyword">while</span> ((ele = ele.firstChild)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!this.isIgnorable(ele))</span><br><span class="line">                <span class="keyword">return</span> ele;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> null;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    /* 参数DOM元素的最后一个子元素 *／</span><br><span class="line">    lastChild: <span class="function"><span class="keyword">function</span> <span class="params">(ele)</span></span> &#123;</span><br><span class="line">        <span class="keyword">while</span> ((ele = ele.lastChild)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!this.isIgnorable(ele))</span><br><span class="line">                <span class="keyword">return</span> ele;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> null;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    /* 判断是否是无意义的节点 *／</span><br><span class="line">    isIgnorable: <span class="function"><span class="keyword">function</span> <span class="params">(node)</span></span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (node.nodeType == <span class="number">8</span>) </span><br><span class="line">					|| ( (node.nodeType == <span class="number">3</span>) </span><br><span class="line">					&amp;&amp; this.isBlankNode(node));</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    /* 是否是空白节点，例如回车，空字符串 *／</span><br><span class="line">    isBlankNode: <span class="function"><span class="keyword">function</span> <span class="params">(node)</span></span> &#123;</span><br><span class="line">        <span class="keyword">return</span> !(/[^\t\n\r ]/.test(node.data));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>demo：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ele = <span class="built_in">document</span>.getElementById(<span class="string">'test'</span>);</span><br><span class="line"><span class="keyword">var</span> attr = <span class="string">'src'</span>;</span><br><span class="line"><span class="comment">// 定义监听器的callback函数，使容器内的audio的src保持同步</span></span><br><span class="line"><span class="keyword">var</span> callback = <span class="function"><span class="keyword">function</span> (<span class="params">element</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//  doSomething...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增加监听器</span></span><br><span class="line">Iflat.DOM.addAttributeListener(eles, attr, callback);</span><br></pre></td></tr></table></figure></p>
-
+            
         
         </div>
         <footer class="article-footer">
@@ -238,7 +208,7 @@
 
 </div>
 
-    <a data-url="http://tyrival.github.io/posts/dom/" data-id="cje0wee5400077ia7q5z5ztrp" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://tyrival.github.io/about/index.html" data-id="cje0wee4w00017ia7ijypnc7z" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -311,25 +281,6 @@
     </div>
     
         
-<nav id="article-nav">
-    
-        <a href="/posts/browser/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    Javascript浏览器相关方法
-                
-            </div>
-        </a>
-    
-    
-        <a href="/posts/git-base/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">Git基本命令集</div>
-        </a>
-    
-</nav>
-
 
     
 </article>

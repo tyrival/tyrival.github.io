@@ -3,20 +3,16 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Hadoop 02：常用命令和配置 | Tyrival</title>
+    <title>分类 | Tyrival</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="介绍hadoop常用命令和配置。">
-<meta name="keywords" content="hadoop">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Hadoop 02：常用命令和配置">
-<meta property="og:url" content="http://tyrival.github.io/posts/hadoop-02-commond/index.html">
+    <meta property="og:type" content="website">
+<meta property="og:title" content="分类">
+<meta property="og:url" content="http://tyrival.github.io/categories/index.html">
 <meta property="og:site_name" content="Tyrival">
-<meta property="og:description" content="介绍hadoop常用命令和配置。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-04-27T01:25:30.000Z">
+<meta property="og:updated_time" content="2017-06-08T07:58:25.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hadoop 02：常用命令和配置">
-<meta name="twitter:description" content="介绍hadoop常用命令和配置。">
+<meta name="twitter:title" content="分类">
     
 
     
@@ -183,188 +179,16 @@
 </aside>
 
             
-            <section id="main"><article id="post-hadoop-02-commond" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 class="article-title" itemprop="name">
-            Hadoop 02：常用命令和配置
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/posts/hadoop-02-commond/">
-            <time datetime="2017-04-27T00:49:01.000Z" itemprop="datePublished">2017-04-27</time>
-        </a>
+            <section id="main"><section class="layout-wrap">
+    <div class="layout-title">
+        <span>分类</span>
     </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/hadoop/">hadoop</a>
+    <div class="layout-wrap-inner list-categories">
+        
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/服务器/">服务器</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/硬件/">硬件</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">3</span></li></ul>
+        
     </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/hadoop/">hadoop</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>介绍hadoop常用命令和配置。</p>
-<a id="more"></a>
-<h4 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h4><ul>
-<li><p>查看File system</p>
-<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># bin/hdfs dfs -ls /  <span class="comment">// 查看根目录</span></span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>将文件放入File system</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> bin/hdfs dfs -put test.txt /data01</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> bin/hdfs dfs -ls /data01  // 读data01中的文件列表</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> bin/hdfs dfs -cat /data01/test.txt  // 读文件text.txt</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> bin/hdfs dfs -rm /data01/test.txt</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除目录</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> bin/hdfs dfs -rmdir /data01</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h4 id="HDFS用户权限"><a href="#HDFS用户权限" class="headerlink" title="HDFS用户权限"></a>HDFS用户权限</h4><ul>
-<li>操作File system目录时，会根据校验是否是当前用户拥有的File system，如果不是，会禁止操作并报错。解决方案是配置文件hdfs-site.xml，添加以下内容：<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.permissions<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>false<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>重启服务<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /opt/modules/hadoop-2.8.0</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> sbin/hadoop-daemon.sh stop namenode  // 关闭namenode</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> sbin/hadoop-daemon.sh stop datanode  // 关闭datanode</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> sbin/hadoop-daemon.sh start namenode  // 启动namenode</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> sbin/hadoop-daemon.sh start datanode  // 启动datanode</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> bin/hdfs dfsadmin -safemode get // 查看安全模式</span></span><br><span class="line">Safe mode is OFF</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>修改文件所有者<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> bin/hdfs dfs -chown -R hadoop /<span class="built_in">test</span>  // 修改hadoop为<span class="built_in">test</span>拥有者</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://tyrival.github.io/posts/hadoop-02-commond/" data-id="cje0wee5a000e7ia788cl5kt4" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-
-        </footer>
-    </div>
-    
-        
-<nav id="article-nav">
-    
-        <a href="/posts/hadoop-03-start-yarn/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    Hadoop 03：启动YARN
-                
-            </div>
-        </a>
-    
-    
-        <a href="/posts/hadoop-01-install/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">Hadoop 01：伪分布式安装</div>
-        </a>
-    
-</nav>
-
-
-    
-</article>
-
-
-    
-    
-        <section id="comments">
-	<div id="commentContainer"></div>
-</section>
-    
-
-</section>
+</section></section>
             
                 
 <aside id="sidebar">
