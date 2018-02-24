@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Ubuntu+ownCloud搭建私有云教程 | Tyrival</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="本文简单介绍了Ubuntu环境下，搭建ownCloud私有云的详细过程。为什么选择ownCloud而不是Seafile呢，因为Seafile的所有数据文件在服务器上都是进行了切割和整合存储的，而ownCloud则是将文件原样保存在服务器上，也就是说，如果别人能访问你的主机，可以绕过ownCloud直接查看你私有云的文件。如果你对安全性的要求较高，就选择Seafile；而我比较在意的是，如果系统崩溃">
+<meta name="keywords" content="server,cloud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu+ownCloud搭建私有云教程">
+<meta property="og:url" content="http://tyrival.github.io/posts/cloud-owncloud-build/index.html">
+<meta property="og:site_name" content="Tyrival">
+<meta property="og:description" content="本文简单介绍了Ubuntu环境下，搭建ownCloud私有云的详细过程。为什么选择ownCloud而不是Seafile呢，因为Seafile的所有数据文件在服务器上都是进行了切割和整合存储的，而ownCloud则是将文件原样保存在服务器上，也就是说，如果别人能访问你的主机，可以绕过ownCloud直接查看你私有云的文件。如果你对安全性的要求较高，就选择Seafile；而我比较在意的是，如果系统崩溃">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-08-21T06:08:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu+ownCloud搭建私有云教程">
+<meta name="twitter:description" content="本文简单介绍了Ubuntu环境下，搭建ownCloud私有云的详细过程。为什么选择ownCloud而不是Seafile呢，因为Seafile的所有数据文件在服务器上都是进行了切割和整合存储的，而ownCloud则是将文件原样保存在服务器上，也就是说，如果别人能访问你的主机，可以绕过ownCloud直接查看你私有云的文件。如果你对安全性的要求较高，就选择Seafile；而我比较在意的是，如果系统崩溃">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Tyrival</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="http://www.tyrival.com">主页</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="http://www.tyrival.com">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">周晨煜</h2>
+            <h3 id="title">全栈程序员 &amp; 自学狂</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>无锡, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/tyrival">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                29
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                15
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/tyrival" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/Tyrival" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-cloud-owncloud-build" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Ubuntu+ownCloud搭建私有云教程
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/posts/cloud-owncloud-build/">
+            <time datetime="2016-12-25T02:55:12.000Z" itemprop="datePublished">2016-12-25</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/服务器/">服务器</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/cloud/">cloud</a>, <a class="tag-link" href="/tags/server/">server</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>本文简单介绍了Ubuntu环境下，搭建ownCloud私有云的详细过程。为什么选择ownCloud而不是Seafile呢，因为Seafile的所有数据文件在服务器上都是进行了切割和整合存储的，而ownCloud则是将文件原样保存在服务器上，也就是说，如果别人能访问你的主机，可以绕过ownCloud直接查看你私有云的文件。如果你对安全性的要求较高，就选择Seafile；而我比较在意的是，如果系统崩溃了，或者换服务器了，可以比较方便的将所有文件迁移或直接导出来，所以我选择ownCloud。<br><a id="more"></a></p>
+<h3 id="搭建内网云"><a href="#搭建内网云" class="headerlink" title="搭建内网云"></a>搭建内网云</h3><ol>
+<li><p>首先，得有一个能装Ubuntu的电脑，但先不要选择和安装Ubuntu。</p>
+</li>
+<li><p>访问：<a href="https://download.owncloud.org/download/repositories/stable/owncloud/" target="_blank" rel="noopener">ownCloud下载</a>，在页面上选择Ubuntu（或其他系统），根据下面列出的系统版本选择Ubuntu的版本，到Ubuntu官网下载相应版本，并安装，安装是建议单独分一个较大的区挂在/home。另外，建议后续所有要输入密码的地方，都与Ubuntu的管理员密码保持一致。</p>
+</li>
+<li><p>安装ssh服务端（不装的话只是没法用ssh连接服务器进行远程而已，仍旧可以在服务器进行配置）</p>
+</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt <span class="keyword">update</span></span><br><span class="line">sudo apt <span class="keyword">install</span> openssh-<span class="keyword">server</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>安装vim</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt <span class="keyword">install</span> vim</span><br></pre></td></tr></table></figure>
+<ol>
+<li>安装并启动Apache2</li>
+</ol>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt install apache2 -y</span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动Apache2</span></span><br><span class="line">sudo systemctl start apache2.service</span><br><span class="line">sudo systemctl enable apache2.service</span><br><span class="line">sudo systemctl status apache2<span class="selector-class">.service</span>  <span class="comment">// 用:q退出</span></span><br></pre></td></tr></table></figure>
+<p>   如果你开启了 Ubuntu 的防火墙（ufw），那么你可以使用如下的命令来解除 web 服务器的端口（80和443）限制</p>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo ufw status</span><br><span class="line">=&gt; Stat<span class="symbol">us:</span> active    // 状态为不活动时，无需继续执行后续指令</span><br><span class="line">sudo ufw allow in 'Apache Full'</span><br><span class="line">=&gt; Rule added</span><br><span class="line">=&gt; Rule added (<span class="symbol">v6</span>)</span><br></pre></td></tr></table></figure>
+<p>   打开浏览器，输入 (http://服务器IP)，能访问到Apache2的默认页面，说明Apache2安装成功。</p>
+<ol>
+<li>安装MySql</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt <span class="keyword">install</span> mysql-<span class="keyword">server</span> mysql-<span class="keyword">client</span></span><br></pre></td></tr></table></figure>
+<p>   安装过程中会要求你设置mysql的root密码，设置完成后，可以执行下列命令查看MySql状态：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">sudo</span> <span class="selector-tag">systemctl</span> <span class="selector-tag">status</span> <span class="selector-tag">mysql</span><span class="selector-class">.service</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>MariaDB Server安装</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt <span class="keyword">install</span> mariadb-<span class="keyword">server</span></span><br></pre></td></tr></table></figure>
+<p>   运行如下的命令来设置 MariaDB root 帐户的密码，中间会让你作几个选择，比如是否关闭远程登录功能。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">sudo</span> mysql_secure_installation</span><br></pre></td></tr></table></figure>
+<ol>
+<li>PHP 脚本语言的安装</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">sudo</span> <span class="selector-tag">apt</span> <span class="selector-tag">install</span> <span class="selector-tag">php7</span><span class="selector-class">.0-mysql</span> <span class="selector-tag">php7</span><span class="selector-class">.0-curl</span> <span class="selector-tag">php7</span><span class="selector-class">.0-json</span> <span class="selector-tag">php7</span><span class="selector-class">.0-cgi</span> <span class="selector-tag">php7</span><span class="selector-class">.0</span> <span class="selector-tag">libapache2-mod-php7</span><span class="selector-class">.0</span></span><br></pre></td></tr></table></figure>
+<p>   安装phpMyAdmin</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt <span class="keyword">install</span> php-mbstring php7.<span class="number">0</span>-mbstring php-gettext</span><br><span class="line">sudo systemctl restart apache2.service</span><br><span class="line">sudo apt <span class="keyword">install</span> phpmyadmin</span><br></pre></td></tr></table></figure>
+<p>   安装过程中，它会提示我们选择 phpMyAdmin 运行的目标服务器，选择 Apache2 并点击确定。还需要设置phpMyAdmin向数据库服务器注册时所用的密码。</p>
+<p>   然后可以开始尝试访问 phpMyAdmin，打开浏览器并输入：http://服务器IP/phpmyadmin ，使用我们安装时设置的 root 帐户和密码，可以访问phpMyAdmin。</p>
+<p>   至此，LAMP全部安装完成。</p>
+<ol>
+<li><p>安装ownCloud</p>
+<p>在刚才的<a href="https://download.owncloud.org/download/repositories/stable/owncloud/" target="_blank" rel="noopener">ownCloud下载</a>，一般会有两种标题以供选择，执行不带files字样命令</p>
+<p><strong>Ubuntu_16.04 owncloud-9.1.3-1.1</strong>  &lt;== 执行这个下面的命令</p>
+</li>
+</ol>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">wget -nv https://download.owncloud.org/download/repositories/stable/Ubuntu_16.04/Release.<span class="built_in">key</span> -O Release.<span class="built_in">key</span></span><br><span class="line"></span><br><span class="line">sudo apt-<span class="built_in">key</span> add - &lt; Release.<span class="built_in">key</span></span><br><span class="line"></span><br><span class="line">sudo sh -c <span class="string">"echo 'deb http://download.owncloud.org/download/repositories/stable/Ubuntu_16.04/ /' &gt; /etc/apt/sources.list.d/owncloud.list"</span></span><br><span class="line"></span><br><span class="line">sudo apt-<span class="built_in">get</span> update</span><br><span class="line"></span><br><span class="line">sudo apt-<span class="built_in">get</span> install owncloud</span><br></pre></td></tr></table></figure>
+<p>   <strong>Ubuntu_16.04 owncloud-files-9.1.3-1.1</strong> &lt;== 这个无视</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">......</span><br></pre></td></tr></table></figure>
+<ol>
+<li>配置MySql数据库</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">// 登录mysql</span><br><span class="line">sudo mysql -u root -p</span><br><span class="line"></span><br><span class="line">// 输入密码</span><br><span class="line"></span><br><span class="line">// 创建owncloud专用库</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> owncloud;</span><br><span class="line"></span><br><span class="line">// 创建一个单独的MySQL用户帐户owncloud</span><br><span class="line"><span class="keyword">GRANT</span> ALL <span class="keyword">ON</span> owncloud.* <span class="keyword">to</span> <span class="string">'owncloud'</span>@<span class="string">'localhost'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'密码'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 如果上面脑抽直接复制语句执行了，导致owncloud的密码设置为"密码"，就用root登录mysql后，用下面的命令修改密码</span></span><br><span class="line"><span class="comment"> * USE mysql</span></span><br><span class="line"><span class="comment"> * UPDATE user SET password = password(”新密码”) WHERE user = “owncloud”;</span></span><br><span class="line"><span class="comment"> * FLUSH PRIVILEGES;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span><br><span class="line"></span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+<ol>
+<li>初始化ownCloud，在浏览器输入</li>
+</ol>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">http:</span><span class="comment">//服务器IP/owncloud</span></span><br></pre></td></tr></table></figure>
+<p>   应当会跳出一个管理界面，在界面上输入：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">用户名：按需设置</span><br><span class="line">密码：按需设置</span><br><span class="line"></span><br><span class="line">数据目录：<span class="regexp">/var/</span>www<span class="regexp">/owncloud/</span>data</span><br><span class="line"></span><br><span class="line">配置数据库：</span><br><span class="line">用户名：owncloud</span><br><span class="line">密码：******</span><br><span class="line">数据库名：owncloud</span><br><span class="line">地址：localhost</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>修改数据存储位置</p>
+<p>停止apache2</p>
+</li>
+</ol>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service apache2 <span class="built_in">stop</span>    <span class="comment">// 需要输入密码</span></span><br></pre></td></tr></table></figure>
+<p>   在/home/tyrival下创建owncloud用于存储数据，这就是第2步单独挂载/home的原因</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /<span class="built_in">home</span>/tyrival</span><br><span class="line"><span class="built_in">mkdir</span> owncloud</span><br></pre></td></tr></table></figure>
+<p>   编辑owncloud配置文件</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /<span class="keyword">var</span>/www/owncloud/<span class="keyword">config</span>/<span class="keyword">config</span><span class="variable">.php</span></span><br></pre></td></tr></table></figure>
+<p>   修改配置文件</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'datadirectory'</span> =&gt; <span class="string">'/var/www/owncloud/data'</span></span><br><span class="line">改为</span><br><span class="line"><span class="string">'datadirectory'</span> =&gt; <span class="string">'/home/tyrival/owncloud'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// :wq 保存退出</span></span><br></pre></td></tr></table></figure>
+<p>   查看原始文件夹/var/www/owncloud/data权限，所有者和组通常都为www-data，将其修改为系统用户</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R <span class="string">tyrival:</span>tyrival <span class="regexp">/var/</span>www<span class="regexp">/owncloud/</span>data</span><br></pre></td></tr></table></figure>
+<p>   进入此文件夹，将其中所有的文件复制到/home/tyrival/owncloud中，<strong>包括隐藏文件.htaccess和.ocdata</strong>，然后修改目标文件夹所有者和权限</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R www-<span class="string">data:</span>www-data <span class="regexp">/home/</span>tyrival/owncloud</span><br><span class="line">sudo chmod <span class="number">770</span> <span class="regexp">/home/</span>tyrival<span class="regexp">/owncloud    /</span>/ 修改后无法访问</span><br></pre></td></tr></table></figure>
+<p>   启动apache2</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service apache2 <span class="built_in">start</span>   <span class="comment"> // 需要输入密码</span></span><br></pre></td></tr></table></figure>
+<p>   至此，数据文件夹修改完成。</p>
+<ol>
+<li><p>浏览器访问： http://服务器IP/owncloud，登录后，点击右上角的用户名，选择“管理”，然后选择左侧菜单“文件处理”，可以修改上传文件的最大限制，通常我设置为10240 MB。</p>
+</li>
+<li><p>内网云搭建完成。</p>
+</li>
+</ol>
+<h3 id="搭建外网云"><a href="#搭建外网云" class="headerlink" title="搭建外网云"></a>搭建外网云</h3><p>由于使用的是ADSL，ip是动态的，所以希望能动态获取ip并进行解析，国内最有名的花生壳又不是很稳定，现在阿里云开放了API，有人已经写了个动态域名解析工具出来，而且是跨平台的，直接配置下就能用。步骤如下：</p>
+<ol>
+<li><p>首先得有一个带端口转发功能的路由器，否则外网访问你的ip只能访问到路由器，无法穿透到内网中访问到云服务器，除非你直接把云服务器接在电信的modem上拨号。</p>
+</li>
+<li><p>先到阿里云注册账号，申请域名，现在域名一年的费用是60，新注册还能便宜点。</p>
+</li>
+<li><p>进入阿里云的管理界面，选择左侧的“域名与网站”—“云解析DNS”，勾选注册的域名，选择“添加解析”：</p>
+<p>记录类型：A</p>
+<p>主机记录：www或者其他子域名，如cloud</p>
+<p>记录值：随便写一个</p>
+<p>解析线路和TTL默认不改</p>
+<p>点击“添加”，完成。</p>
+</li>
+<li><p>回到刚才的云解析DNS界面，右上方有个AccessKeys，进入后选择”创建Access Key“，然后根据手机验证创建一个Key，将Access Key ID和Access Key Secret记录下来，一会要用到。</p>
+</li>
+<li><p>安装git</p>
+</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt <span class="keyword">install</span> git</span><br></pre></td></tr></table></figure>
+<ol>
+<li>安装和配置阿里云ddns客户端</li>
+</ol>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cd</span> /<span class="keyword">opt</span></span><br><span class="line">sudo git clone http<span class="variable">s:</span>//github.<span class="keyword">com</span>/rfancn/aliyun-ddns-client.git</span><br><span class="line"></span><br><span class="line">// 拷贝配置文件到指定位置</span><br><span class="line"><span class="keyword">cd</span> aliyun-ddns-client/</span><br><span class="line">sudo <span class="keyword">cp</span> ddns.<span class="keyword">conf</span>.example /etc/ddns.<span class="keyword">conf</span></span><br><span class="line"></span><br><span class="line">//编辑配置文件</span><br><span class="line">sudo <span class="keyword">vim</span> /etc/ddns.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[DEFAULT]</span></span><br><span class="line"><span class="attr">access_id</span> = ABC******XYZ    // 第<span class="number">3</span>步的Access Key ID</span><br><span class="line"><span class="attr">access_key</span> = aaabbb*********YYYZZZ    // 第<span class="number">3</span>步的Access Key Secret</span><br><span class="line"><span class="attr">interval</span> = <span class="number">600</span>    // 默认</span><br><span class="line"><span class="attr">debug</span> = <span class="literal">true</span>    // 默认</span><br><span class="line">    </span><br><span class="line"><span class="section">[DomainRecord1]</span></span><br><span class="line"><span class="attr">domain</span> = tyrival.com    // 第<span class="number">2</span>步注册的域名</span><br><span class="line"><span class="attr">sub_domain</span> = www    // 第<span class="number">2</span>步填写的www等子域名</span><br><span class="line"><span class="attr">type</span> = A    // 第<span class="number">2</span>步的记录类型</span><br><span class="line"><span class="attr">id</span> =     // 空着</span><br><span class="line"><span class="attr">value</span> =     // 空着</span><br></pre></td></tr></table></figure>
+<p>   按ESC，然后:wq保存退出。</p>
+<ol>
+<li>由于ddns客户端需要用到python，可能要安装如下依赖包：</li>
+</ol>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 安装pip——python包管理工具&lt;可选择&gt;</span><br><span class="line">sudo apt-get <span class="keyword">install</span> python-pip python-dev build-essential</span><br><span class="line">sudo pip <span class="keyword">install</span> --upgrade pip </span><br><span class="line">sudo pip <span class="keyword">install</span> --upgrade virtualenv </span><br><span class="line"></span><br><span class="line">// 安装requests依赖包</span><br><span class="line">pip <span class="keyword">install</span> requests</span><br></pre></td></tr></table></figure>
+<ol>
+<li>执行ddns客户端同步</li>
+</ol>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="keyword">python</span> /<span class="keyword">opt</span>/aliyun-ddns-client/ddns.<span class="keyword">py</span></span><br><span class="line"></span><br><span class="line">// 第一次运行可能会报错[ERROR] You must specify domain record id.如果报这个错，再执行一次试试看。</span><br><span class="line">****[INFO]	Successfully <span class="keyword">sync</span> done <span class="keyword">for</span> record:DomainRecord1</span><br></pre></td></tr></table></figure>
+<p>   执行完后，到云DNS解析那里看看，刚才随便写的ip应该被修改成了你的真实ip。</p>
+<ol>
+<li>利用Ubuntu的任务管理来实现域名动态解析</li>
+</ol>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">sudo crontab -e</span></span><br></pre></td></tr></table></figure>
+<p>   我们在文件内容末尾追加一行，输入：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*<span class="string">/1</span> * * * * <span class="keyword">cd</span> <span class="string">/opt/aliyun-ddns-client</span> &amp;&amp; <span class="string">/usr/bin/python</span> ddns.py</span><br></pre></td></tr></table></figure>
+<p>   表示每隔1分钟进行一次刚才的刷新，至此，动态域名解析完成。</p>
+<ol>
+<li>通常，我们使用的ADSL是带路由器的，外网访问你的ip，也只能到路由器，无法具体找到内网中的电脑，所以需要在路由器上设置一个端口转发规则：</li>
+</ol>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">协议：TCP或者全部</span><br><span class="line">IP：云服务器的内网IP</span><br><span class="line">外部端口：<span class="number">8090</span>或者其他</span><br><span class="line">内部端口：<span class="number">80</span>  &lt;== 这个取决于你的Apache2服务监听的端口，如果没改过就是<span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 另外可以顺便建立外部映射到云服务器，外网端口和内网端口都为22的ssh映射，方便在外网连接云服务器</span></span><br></pre></td></tr></table></figure>
+<p>   这里需要注意的是<strong>外部端口</strong>，因为未备案的网站的80端口是被国家全部封掉的，443和8080可能也是封掉的，所以这三个端口就不要用于外部端口了，自定义一个8090这种可用的端口。</p>
+<ol>
+<li>至此，外网云搭建完成，等上一会儿，最多估计10分钟左右，就可以通过域名访问你的云服务了。</li>
+</ol>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="string">//www</span><span class="params">(第3步中的子域名)</span>.你的域名<span class="string">.com</span><span class="function">:8090</span><span class="params">(第10步中的外部端口)</span><span class="string">/owncloud</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>可选步骤：如果第10步中，你希望指向一个非80端口，那就需要修改Apache的端口，记得和第10步的内网端口一致</li>
+</ol>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo vim <span class="regexp">/etc/</span>apache2<span class="regexp">/sites-available/</span><span class="number">000</span>-<span class="keyword">default</span>.conf</span><br><span class="line"></span><br><span class="line"><span class="comment">// &lt;VirtualHost *:80&gt;改成&lt;VirtualHost *:你想要的端口&gt;，然后保存退出。</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/apache2/ports.conf</span><br><span class="line"></span><br><span class="line"><span class="comment">// Listen 80改成Listen 你想要的端口，然后保存退出。</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service apache2 restart    <span class="comment">// 重启apache服务</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>可选步骤：使用HTTPS加密，这个需要</p>
+<p>安装签名工具</p>
+</li>
+</ol>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cd</span> <span class="string">/home/tyrival</span></span><br><span class="line">    </span><br><span class="line">git clone https:<span class="string">//github.com/Neilpang/acme.sh.git</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">cd</span> <span class="string">./acme.sh</span></span><br><span class="line"></span><br><span class="line">sudo <span class="string">./acme.sh</span> <span class="params">--install</span></span><br></pre></td></tr></table></figure>
+<p>   生成证书</p>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo ./acme.sh --issue --dns -d 你的域名.com</span><br><span class="line"></span><br><span class="line">=<span class="ruby">=&gt; Registering account</span></span><br><span class="line"><span class="ruby">==&gt; *********</span></span><br><span class="line"><span class="ruby">==&gt; <span class="symbol">Domain:</span> <span class="string">'_acme-challenge.你的域名.com'</span></span></span><br><span class="line"><span class="ruby">==&gt; TXT <span class="symbol">value:</span> <span class="string">'_AAABBB*********YYYZZZ'</span></span></span><br><span class="line"><span class="ruby">==&gt; *********</span></span><br></pre></td></tr></table></figure>
+<p>   记住Domain和TXT Value到刚才的阿里云DNS解析那里，新增一个解析</p>
+<figure class="highlight sml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">记录类型：<span class="type">TXT</span></span><br><span class="line">主机记录：<span class="symbol">'_acme</span>-challenge.你的域名.com'</span><br><span class="line">记录值：<span class="symbol">'_AAABBB</span>*********<span class="type">YYYZZZ'</span></span><br></pre></td></tr></table></figure>
+<p>   申请证书</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="string">./acme.sh</span> <span class="params">--renew</span> -d 你的域名<span class="string">.com</span></span><br><span class="line"></span><br><span class="line"><span class="string">//</span> 成功的话会有如下提示</span><br><span class="line">*** Renew: '你的域名<span class="string">.com</span>'</span><br><span class="line">*** Single domain='你的域名<span class="string">.com</span>'</span><br><span class="line">*** Getting domain auth token for each domain</span><br><span class="line">*** Verifying:你的域名<span class="string">.com</span></span><br><span class="line">*** Success</span><br><span class="line">*** Verify finished, start to sign.</span><br><span class="line">*** Cert success.</span><br><span class="line"><span class="params">-----BEGIN</span> CERTIFICATE<span class="params">-----</span></span><br><span class="line">MIIE+jCCA+KgAwIBAgISA1yIkeGmdcR3mWQ1mDRuGpYwMA0GCSqGSIb3DQEBCwUA</span><br><span class="line">MEoxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MSMwIQYDVQQD</span><br><span class="line">************</span><br><span class="line">0tofB/V66BhMtw+BzwUNk/brmy2iuA6mdoiGOaS5rxlv/rsRlFgba5mKLwOhuLvo</span><br><span class="line">bNVG4y1lNAQ1m17QYdfPMtUFpfiO6e+xyuiownBoJWcWs1TnCx7k6J36ICLyljuB</span><br><span class="line">xjeDoZFiVBewn4iapjQB98E6J77wfMEttlunqslS</span><br><span class="line"><span class="params">-----END</span> CERTIFICATE<span class="params">-----</span></span><br><span class="line">*** Your cert is in  <span class="string">/home/</span>***<span class="string">/.acme.sh/</span>***<span class="string">.com/</span>***<span class="string">.com.cer</span> </span><br><span class="line">*** Your cert key is in  <span class="string">/home/</span>***<span class="string">/.acme.sh/</span>***<span class="string">.com/</span>***<span class="string">.com.key</span> </span><br><span class="line">*** The intermediate CA cert is in  <span class="string">/home/</span>***<span class="string">/.acme.sh/</span>***<span class="string">.com/ca.cer</span> </span><br><span class="line">*** And the full chain certs is there:  <span class="string">/home/</span>***<span class="string">/.acme.sh/</span>***<span class="string">.com/fullchain.cer</span></span><br></pre></td></tr></table></figure>
+<p>   记录倒数第3、4行中，in后面的信息。</p>
+<p>   安装证书，首先要看存放证书的位置，然后把证书复制过去</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo vim <span class="regexp">/etc/</span>apache2<span class="regexp">/sites-available/</span><span class="keyword">default</span>-ssl.conf</span><br><span class="line"></span><br><span class="line"><span class="comment">// 找到下面两行</span></span><br><span class="line">SSLCertificateFile      <span class="regexp">/etc/</span>ssl<span class="regexp">/certs/</span>ssl-cert-snakeoil.pem</span><br><span class="line">SSLCertificateKeyFile   <span class="regexp">/etc/</span>ssl<span class="regexp">/private/</span>ssl-cert-snakeoil.key</span><br></pre></td></tr></table></figure>
+<p>   :q退出，然后把证书和私钥复制进去，证书为钢材倒数第4行，私钥为倒数第3行</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo cp <span class="string">/home/</span>***<span class="string">/.acme.sh/</span>***<span class="string">.com/</span>***<span class="string">.com.cer</span> <span class="string">/etc/ssl/certs/ssl-cert-snakeoil.pem</span></span><br><span class="line">sudo cp <span class="string">/home/</span>***<span class="string">/.acme.sh/</span>***<span class="string">.com/</span>***<span class="string">.com.key</span> <span class="string">/etc/ssl/private/ssl-cert-snakeoil.key</span></span><br></pre></td></tr></table></figure>
+<p>   安装openssl</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">apt install openssl</span><br><span class="line"></span><br><span class="line"><span class="comment">// 开启ssl模块</span></span><br><span class="line">sudo a2enmod ssl</span><br></pre></td></tr></table></figure>
+<p>   修改https默认路径</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo vim <span class="regexp">/etc/</span>apache2<span class="regexp">/sites-available/</span><span class="keyword">default</span>-ssl.conf</span><br><span class="line">    </span><br><span class="line"><span class="comment">// 改成下面值的</span></span><br><span class="line">DocumentRoot <span class="regexp">/var/</span>www<span class="regexp">/owncloud</span></span><br></pre></td></tr></table></figure>
+<p>   启用https：上文安装完后，会在  /etc/apache2/sites-available/ 目录下生成一个缺省的  default-ssl 文件。缺省的网页目录仍然是  /var/www/ 。我们可以创建一个链接到  site-enabled 目录。</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s <span class="regexp">/etc/</span>apache2<span class="regexp">/sites-available/</span><span class="keyword">default</span>-ssl.conf <span class="regexp">/etc/</span>apache2<span class="regexp">/sites-enabled/</span><span class="keyword">default</span>-ssl.conf</span><br></pre></td></tr></table></figure>
+<p>   重启apache服务</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service apache2 <span class="built_in">restart</span></span><br></pre></td></tr></table></figure>
+<p>   <strong>然后到路由器配置下映射到云服务器的443端口</strong>，https加密完成。</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://tyrival.github.io/posts/cloud-owncloud-build/" data-id="cje0wb4ui00015wa7b8r7euay" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/js-module-programming/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Javascript模块化编程
+                
+            </div>
+        </a>
+    
+    
+        <a href="/posts/js-scope/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Javascript作用域</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+	<div id="commentContainer"></div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/iOS/">iOS</a></p>
+                            <p class="item-title"><a href="/posts/swift-01-base/" class="title">Swift3 - 01：基础语法</a></p>
+                            <p class="item-date"><time datetime="2017-07-03T03:51:04.000Z" itemprop="datePublished">2017-07-03</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/前端/">前端</a></p>
+                            <p class="item-title"><a href="/posts/less-and-webstorm/" class="title">Less入门 &amp; Webstorm实时编译</a></p>
+                            <p class="item-date"><time datetime="2017-06-20T12:26:12.000Z" itemprop="datePublished">2017-06-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/前端/">前端</a></p>
+                            <p class="item-title"><a href="/posts/vue-02-base/" class="title">Vue 02：单页面开发基础</a></p>
+                            <p class="item-date"><time datetime="2017-06-19T07:33:56.000Z" itemprop="datePublished">2017-06-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/前端/">前端</a></p>
+                            <p class="item-title"><a href="/posts/vue-01-initial/" class="title">Vue 01：初始化项目</a></p>
+                            <p class="item-date"><time datetime="2017-06-19T06:12:05.000Z" itemprop="datePublished">2017-06-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/硬件/">硬件</a></p>
+                            <p class="item-title"><a href="/posts/pi-02-thunder-remote/" class="title">树莓派 02：搭建迅雷远程下载服务器</a></p>
+                            <p class="item-date"><time datetime="2017-06-07T21:57:06.000Z" itemprop="datePublished">2017-06-08</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/服务器/">服务器</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/硬件/">硬件</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/f-k-ie/">f**k ie</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/less/">less</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberry/">raspberry</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/css/" style="font-size: 12px;">css</a> <a href="/tags/database/" style="font-size: 12px;">database</a> <a href="/tags/f-k-ie/" style="font-size: 14px;">f**k ie</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hadoop/" style="font-size: 18px;">hadoop</a> <a href="/tags/javascript/" style="font-size: 20px;">javascript</a> <a href="/tags/less/" style="font-size: 10px;">less</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/raspberry/" style="font-size: 12px;">raspberry</a> <a href="/tags/server/" style="font-size: 16px;">server</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/vue/" style="font-size: 12px;">vue</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 Tyrival<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

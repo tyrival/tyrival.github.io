@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Hadoop 01：伪分布式安装 | Tyrival</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="介绍伪分布式安装Hadoop步骤。">
+<meta name="keywords" content="hadoop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop 01：伪分布式安装">
+<meta property="og:url" content="http://tyrival.github.io/posts/hadoop-01-install/index.html">
+<meta property="og:site_name" content="Tyrival">
+<meta property="og:description" content="介绍伪分布式安装Hadoop步骤。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-12-08T09:22:24.667Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hadoop 01：伪分布式安装">
+<meta name="twitter:description" content="介绍伪分布式安装Hadoop步骤。">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Tyrival</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="http://www.tyrival.com">主页</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="http://www.tyrival.com">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">周晨煜</h2>
+            <h3 id="title">全栈程序员 &amp; 自学狂</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>无锡, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/tyrival">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                29
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                15
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/tyrival" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/Tyrival" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-hadoop-01-install" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Hadoop 01：伪分布式安装
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/posts/hadoop-01-install/">
+            <time datetime="2017-04-27T00:48:03.000Z" itemprop="datePublished">2017-04-27</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/hadoop/">hadoop</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/hadoop/">hadoop</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>介绍伪分布式安装Hadoop步骤。</p>
+<a id="more"></a>
+<ol>
+<li>操作系统：CentOS-7-x86_64-Everything-1611</li>
+<li><p>切换到root用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> su</span></span><br><span class="line">Password:</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开启SSH远程登录</p>
+</li>
+<li><p>关闭防火墙和禁用SELinux</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> service iptables stop   // 暂时关闭</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> chkconfig iptables off  // 永久关闭</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> systemctl stop firewalld.service  // 关闭firewall</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> systemctl <span class="built_in">disable</span> firewalld.service  // 禁止firewall开机启动</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> service iptables status  // 查看防火墙状态</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> vim /etc/sysconfig/selinux  // 设置SELINUX=disabled</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置静态IP地址</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim /etc/sysconfig/network-scripts/ifcfg-eth0</span></span><br><span class="line"><span class="attr">ONBOOT</span>=<span class="literal">yes</span></span><br><span class="line"><span class="attr">IPADDR</span>=<span class="number">10.211</span>.<span class="number">55.11</span></span><br><span class="line"><span class="attr">GATEWAY</span>=<span class="number">10.211</span>.<span class="number">55.1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># service network restart</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改HostName</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># hostname hadoop.o.cn  // 当前生效</span></span><br><span class="line"><span class="comment"># vim /etc/sysconfig/network  // 下次启动生效</span></span><br><span class="line"><span class="attr">NETWORKING</span>=<span class="literal">yes</span></span><br><span class="line"><span class="attr">HOSTNAME</span>=hadoop.o.cn</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>IP与HostName绑定</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># vim /etc/hosts</span><br><span class="line"><span class="number">10.211</span><span class="number">.55</span><span class="number">.11</span>  	hadoop.o.cn 	hadoop    <span class="comment">// 用tab分隔，不用空格</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装JDK</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">安装目录 /opt/modules/jdk1.8.0_121</span><br><span class="line"><span class="comment"># sudo vim ~/.bashrc  // 文件末尾添加以下内容</span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/lib/jvm/jdk1.8.0_121</span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">JRE_HOME</span>=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre  </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">CLASSPATH</span>=.:$&#123;JAVA_HOME&#125;/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib  </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:$PATH  </span><br><span class="line"></span><br><span class="line"><span class="comment"># source ~/.bashrc</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置系统默认jdk版本</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1<span class="number">.8</span><span class="number">.0</span>_121/bin/java <span class="number">300</span>  </span><br><span class="line"># update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1<span class="number">.8</span><span class="number">.0</span>_121/bin/javac <span class="number">300</span>  </span><br><span class="line"># update-alternatives --install /usr/bin/jar jar /usr/lib/jvm/jdk1<span class="number">.8</span><span class="number">.0</span>_121/bin/jar <span class="number">300</span>   </span><br><span class="line"># update-alternatives --install /usr/bin/javah javah /usr/lib/jvm/jdk1<span class="number">.8</span><span class="number">.0</span>_121/bin/javah <span class="number">300</span>   </span><br><span class="line"># update-alternatives --install /usr/bin/javap javap /usr/lib/jvm/jdk1<span class="number">.8</span><span class="number">.0</span>_121/bin/javap <span class="number">300</span>   </span><br><span class="line"># update-alternatives --config java</span><br><span class="line"># java -version</span><br><span class="line">java version <span class="string">"1.8.0_121"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>hadoop安装目录：/opt/modules/</p>
+</li>
+<li><p>解压TAR包</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># tar -zxvf hadoop<span class="number">-2.8</span><span class="number">.0</span>.tar.gz -C /opt/modules/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入hadoop文件夹</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /opt/modules/hadoop-2.8.0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改配置文件</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># cd /opt/modules/hadoop-2.8.0/etc/hadoop</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># vim hadoop-env.sh  <span class="comment">// 如下修改JAVA_HOME</span></span></span><br><span class="line">export JAVA_HOME=<span class="meta-keyword">/opt/</span>modules/jdk1<span class="number">.8</span><span class="number">.0</span>_121</span><br><span class="line"></span><br><span class="line"><span class="meta"># vim yarn-env.sh  <span class="comment">// 添加以下内容</span></span></span><br><span class="line">export JAVA_HOME=<span class="meta-keyword">/opt/</span>modules/jdk1<span class="number">.8</span><span class="number">.0</span>_121</span><br><span class="line"></span><br><span class="line"><span class="meta"># vim mapred-env.sh  <span class="comment">// 添加以下内容</span></span></span><br><span class="line">export JAVA_HOME=<span class="meta-keyword">/opt/</span>modules/jdk1<span class="number">.8</span><span class="number">.0</span>_121</span><br><span class="line"></span><br><span class="line"><span class="meta"># vim core-site.xml  <span class="comment">// 配置NameNode和缓存文件夹</span></span></span><br><span class="line"><span class="params">&lt;configuration&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>fs.defaultFS<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>hdfs:<span class="comment">//hadoop.o.cn:8020&lt;/value&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>hadoop.tmp.dir<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="meta-keyword">/opt/</span>modules/hadoop<span class="number">-2.8</span><span class="number">.0</span><span class="meta-keyword">/data/</span>tmp<span class="params">&lt;/value&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line"><span class="params">&lt;/configuration&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># vim hdfs-site.xml  <span class="comment">// 设置hdfs副本数为1</span></span></span><br><span class="line"><span class="params">&lt;configuration&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.replication<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="number">1</span><span class="params">&lt;/value&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line"><span class="params">&lt;/configuration&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># vim  yarn-site.xml  <span class="comment">// 配置yarn</span></span></span><br><span class="line"><span class="params">&lt;configuration&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>yarn.nodemanager.aux-services<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>mapreduce_shuffle<span class="params">&lt;/value&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line"><span class="params">&lt;/configuration&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># cp mapred-site.xml.template mapred-site.xml  <span class="comment">// 复制模板</span></span></span><br><span class="line"><span class="meta"># vim mapred-site.xml  <span class="comment">// mapreduce运行于yarn框架中</span></span></span><br><span class="line"><span class="params">&lt;configuration&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>mapreduce.framework.name<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>yarn<span class="params">&lt;/value&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line"><span class="params">&lt;/configuration&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>退回Hadoop根目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /opt/modules/Hadoop-2.8.0  // 退回Hadoop根目录</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> mkdir -p data/tmp  // 创建core-site.xml中的tmp目录</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动HDFS</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> bin/hdfs namenode -format  // NameNode格式化</span></span><br><span class="line">扩展： </span><br><span class="line">	* 指定Cluster ID为yarn-cluster</span><br><span class="line"><span class="meta">	#</span><span class="bash"> bin/hdfs namenode -format -clusterid yarn-cluster</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> sbin/hadoop-daemon.sh start namenode  // 启动NameNode</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> sbin/hadoop-daemon.sh start datanode  // 启动DataNode</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> sbin/hadoop-daemon.sh start secondarynamenode  // 启动SecondaryNameNode</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> jps  // 查看进程</span></span><br><span class="line">5751 DataNode</span><br><span class="line">11114 Jps</span><br><span class="line">5098 NameNode</span><br><span class="line">11051 SecondaryNameNode</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建File system</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> bin/hdfs dfs -mkdir /data01</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> bin/hdfs dfs -ls /    // 查看</span></span><br><span class="line">Found 1 items</span><br><span class="line">drwxr-xr-x   - root supergroup          0 2017-04-06 14:41 /data01</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>登录hadoop.o.cn:50070<br>Utilities -&gt; Browser the file system 可看到data01</p>
+</li>
+<li><p>日志文件：$HADOOP_HOME/logs<br>.log ：通过log4j记录的大部分应用程序的日志<br>.out ：记录标准输出和标准错误日志，少量<br>命名规则：框架名称 - 用户名 - 进程名 - 主机名 - 日志格式后缀</p>
+</li>
+</ol>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://tyrival.github.io/posts/hadoop-01-install/" data-id="cje0wb4ut000a5wa7od6kuflh" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/hadoop-02-commond/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Hadoop 02：常用命令和配置
+                
+            </div>
+        </a>
+    
+    
+        <a href="/posts/pd-gnome-display/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Parallels Desktop虚拟机Gnome分辨率</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+	<div id="commentContainer"></div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/iOS/">iOS</a></p>
+                            <p class="item-title"><a href="/posts/swift-01-base/" class="title">Swift3 - 01：基础语法</a></p>
+                            <p class="item-date"><time datetime="2017-07-03T03:51:04.000Z" itemprop="datePublished">2017-07-03</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/前端/">前端</a></p>
+                            <p class="item-title"><a href="/posts/less-and-webstorm/" class="title">Less入门 &amp; Webstorm实时编译</a></p>
+                            <p class="item-date"><time datetime="2017-06-20T12:26:12.000Z" itemprop="datePublished">2017-06-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/前端/">前端</a></p>
+                            <p class="item-title"><a href="/posts/vue-02-base/" class="title">Vue 02：单页面开发基础</a></p>
+                            <p class="item-date"><time datetime="2017-06-19T07:33:56.000Z" itemprop="datePublished">2017-06-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/前端/">前端</a></p>
+                            <p class="item-title"><a href="/posts/vue-01-initial/" class="title">Vue 01：初始化项目</a></p>
+                            <p class="item-date"><time datetime="2017-06-19T06:12:05.000Z" itemprop="datePublished">2017-06-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/硬件/">硬件</a></p>
+                            <p class="item-title"><a href="/posts/pi-02-thunder-remote/" class="title">树莓派 02：搭建迅雷远程下载服务器</a></p>
+                            <p class="item-date"><time datetime="2017-06-07T21:57:06.000Z" itemprop="datePublished">2017-06-08</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/服务器/">服务器</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/硬件/">硬件</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/f-k-ie/">f**k ie</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/less/">less</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberry/">raspberry</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/css/" style="font-size: 12px;">css</a> <a href="/tags/database/" style="font-size: 12px;">database</a> <a href="/tags/f-k-ie/" style="font-size: 14px;">f**k ie</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hadoop/" style="font-size: 18px;">hadoop</a> <a href="/tags/javascript/" style="font-size: 20px;">javascript</a> <a href="/tags/less/" style="font-size: 10px;">less</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/raspberry/" style="font-size: 12px;">raspberry</a> <a href="/tags/server/" style="font-size: 16px;">server</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/vue/" style="font-size: 12px;">vue</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 Tyrival<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

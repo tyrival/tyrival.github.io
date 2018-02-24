@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Less入门 &amp; Webstorm实时编译 | Tyrival</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="Less只要半小时就入门了，顺便介绍下怎样用Webstorm实时编译和调试。">
+<meta name="keywords" content="css,less">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Less入门 &amp; Webstorm实时编译">
+<meta property="og:url" content="http://tyrival.github.io/posts/less-and-webstorm/index.html">
+<meta property="og:site_name" content="Tyrival">
+<meta property="og:description" content="Less只要半小时就入门了，顺便介绍下怎样用Webstorm实时编译和调试。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-06-20T13:42:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Less入门 &amp; Webstorm实时编译">
+<meta name="twitter:description" content="Less只要半小时就入门了，顺便介绍下怎样用Webstorm实时编译和调试。">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Tyrival</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="http://www.tyrival.com">主页</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="http://www.tyrival.com">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">周晨煜</h2>
+            <h3 id="title">全栈程序员 &amp; 自学狂</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>无锡, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/tyrival">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                29
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                15
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/tyrival" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/Tyrival" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-less-and-webstorm" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Less入门 &amp; Webstorm实时编译
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/posts/less-and-webstorm/">
+            <time datetime="2017-06-20T12:26:12.000Z" itemprop="datePublished">2017-06-20</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/前端/">前端</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/css/">css</a>, <a class="tag-link" href="/tags/less/">less</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>Less只要半小时就入门了，顺便介绍下怎样用Webstorm实时编译和调试。</p>
+<a id="more"></a>
+<h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><ul>
+<li>创建一个最简单的工程，基本结构如下：</li>
+</ul>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">|- css			<span class="comment">// 编译生成css的文件夹</span></span><br><span class="line">|- src			<span class="comment">// 源码</span></span><br><span class="line">	|- style	<span class="comment">// less文件夹</span></span><br><span class="line">|- <span class="keyword">index</span>.html	<span class="comment">// 首页</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>变量</li>
+</ul>
+<p>变量主要用于声明一个可复用的样式，供多次调用，可将全局常用变量声明在一个文件中，例如创建文件/src/style/variables.less，用于保存全局变量；/src/style/main.less，用于编写样式。这里需要说明，<strong>分号（;）在less中非常重要，尽量不要省略。</strong></p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">## <span class="selector-tag">variables</span><span class="selector-class">.less</span></span><br><span class="line">@<span class="selector-tag">color_default</span>: <span class="selector-id">#ffffff</span>;    <span class="comment">// 用@声明变量，末尾需要加分号;</span></span><br><span class="line"></span><br><span class="line">## <span class="selector-tag">main</span><span class="selector-class">.less</span></span><br><span class="line">@import "./variables.less";		// 引入全局变量</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.btn-default</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="variable">@color_default</span>;  <span class="comment">// 引用变量，声明样式</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.nav</span> &#123;</span><br><span class="line">  <span class="variable">@nav_height:</span> <span class="number">55px</span>;		<span class="comment">// 声明局部变量，作用域为所在的大括号内</span></span><br><span class="line">  <span class="attribute">height</span>: <span class="variable">@nav_height</span>;</span><br><span class="line">  <span class="selector-tag">li</span> &#123;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="variable">@nav_height</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>混合（mixin）</li>
+</ul>
+<p>混合可以声明一组固定的样式，被其他元素所引用</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 普通 */</span></span><br><span class="line"><span class="selector-class">.panel</span> &#123;</span><br><span class="line">  <span class="attribute">border</span>: solid <span class="number">1px</span> <span class="number">#999999</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#ffffff</span>;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">12px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.btn</span> &#123;</span><br><span class="line">  <span class="selector-class">.panel</span>;	<span class="comment">// 加分号</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 带参数，类似带参函数，常用于部分样式不确定 */</span></span><br><span class="line"><span class="selector-class">.border</span>(<span class="variable">@border_width</span>) &#123;</span><br><span class="line">  <span class="attribute">border</span>: solid black <span class="variable">@border_width</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.panel</span> &#123;</span><br><span class="line">  <span class="selector-class">.border</span>(<span class="number">5px</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 带默认值的参数 */</span></span><br><span class="line"><span class="selector-class">.border</span>(<span class="variable">@border_width</span>:<span class="number">10px</span>) &#123;</span><br><span class="line">  <span class="attribute">border</span>: solid black <span class="variable">@border_width</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.panel</span> &#123;</span><br><span class="line">  <span class="selector-class">.border</span>();	<span class="comment">// 参数为空则取默认值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>匹配模式</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 三角向上</span></span><br><span class="line"><span class="selector-class">.triangle</span>(top,<span class="variable">@width</span>:<span class="number">5px</span>,<span class="variable">@color</span>:red) &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">  </span><br><span class="line">  <span class="attribute">nprder-style</span>: solid dashed dashed dashed;		<span class="comment">// 匹配旧版IE，如果只写solid，会导致背景为黑色</span></span><br><span class="line">  <span class="attribute">border-width</span>: <span class="variable">@width</span>;</span><br><span class="line">  <span class="attribute">border-color</span>: <span class="variable">@color</span> transparent transparent transparent;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 三角向下</span></span><br><span class="line"><span class="selector-class">.triangle</span>(bottom,<span class="variable">@width</span>:<span class="number">5px</span>,<span class="variable">@color</span>:red) &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">  </span><br><span class="line">  <span class="attribute">nprder-style</span>: dashed dashed solid dashed;</span><br><span class="line">  <span class="attribute">border-width</span>: <span class="variable">@width</span>;</span><br><span class="line">  <span class="attribute">border-color</span>: transparent transparent transparent;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.triangle-down</span> &#123;</span><br><span class="line">  <span class="selector-class">.triangle</span>(bottom);	<span class="comment">// 向下的三角</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 以上代码可将共有的部分提取出来，利用通配符@_匹配，类似函数的重载 */</span></span><br><span class="line"><span class="selector-class">.triangle</span>(top,<span class="variable">@width</span>:<span class="number">5px</span>,<span class="variable">@color</span>:red) &#123;</span><br><span class="line">  <span class="attribute">nprder-style</span>: solid dashed dashed dashed;</span><br><span class="line">  <span class="attribute">border-width</span>: <span class="variable">@width</span>;</span><br><span class="line">  <span class="attribute">border-color</span>: <span class="variable">@color</span> transparent transparent transparent;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.triangle</span>(bottom,<span class="variable">@width</span>:<span class="number">5px</span>,<span class="variable">@color</span>:red) &#123;</span><br><span class="line">  <span class="attribute">nprder-style</span>: dashed dashed solid dashed;</span><br><span class="line">  <span class="attribute">border-color</span>: transparent transparent transparent;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 表示不管第一个参数传入什么值，都需要带上这组样式</span></span><br><span class="line"><span class="selector-class">.triangle</span>(<span class="variable">@_</span>,<span class="variable">@width</span>:<span class="number">5px</span>,<span class="variable">@color</span>:red) &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">  <span class="attribute">border-width</span>: <span class="variable">@width</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.triangle-down</span> &#123;</span><br><span class="line">  <span class="selector-class">.triangle</span>(bottom);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>运算</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">@height:</span> <span class="number">100px</span>;</span><br><span class="line"><span class="variable">@color:</span> <span class="number">#aaaaaa</span>;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.panel</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: (<span class="variable">@height</span> + <span class="number">20</span> - <span class="number">5</span>) * <span class="number">6</span> / <span class="number">3</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="variable">@color</span> - <span class="number">10</span>;	<span class="comment">// 颜色运算使用较少</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>嵌套</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 潜逃中常用&amp;代替上级选择器 */</span></span><br><span class="line"><span class="selector-tag">ul</span> &#123;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 等同 ul li</span></span><br><span class="line">  <span class="selector-tag">li</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 等同 ul li a</span></span><br><span class="line">    <span class="selector-tag">a</span> &#123;</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// 等同 ul li a .icon，不是 a.icon</span></span><br><span class="line">      <span class="selector-class">.icon</span> &#123;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// &amp;代替的是上级选择器，即a，等同 ul li a.active</span></span><br><span class="line">      <span class="selector-tag">&amp;</span><span class="selector-class">.active</span> &#123;</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// 等同 ul li a:hover</span></span><br><span class="line">      <span class="selector-tag">&amp;</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>@arguments</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 代替全部参数 */</span></span><br><span class="line"><span class="selector-class">.border</span>(<span class="variable">@w</span>:<span class="number">5px</span>, <span class="variable">@c</span>:black, solid) &#123;</span><br><span class="line">  <span class="attribute">border</span>: <span class="variable">@arguments</span>;	<span class="comment">// 代入所有的参数</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.btn</span> &#123;</span><br><span class="line">  <span class="selector-class">.border</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>注释</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 这类注释会被原样编译到css中 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这类注释不会被编译到css中</span></span><br></pre></td></tr></table></figure>
+<h3 id="Webstorm实时编译"><a href="#Webstorm实时编译" class="headerlink" title="Webstorm实时编译"></a>Webstorm实时编译</h3><ul>
+<li>Webstorm可以将less实时编译为css，并且发布到浏览器，此功能还需要用到Chrome和npm（安装NodeJS）；</li>
+<li>Chrome安装JetBrains IDE Support扩展；</li>
+<li>npm安装less编译器</li>
+</ul>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo npm <span class="keyword">install</span> -g <span class="keyword">less</span>		// 全局安装，如果未翻墙，改为执行 sudo cnpm <span class="keyword">install</span> -g <span class="keyword">less</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Webstorm打开Preference &gt; Build,Execution,Deployment &gt; Debugger &gt; Live Edit，勾选Update中的Auto in (ms)，后面填写更新频率，比如200。</li>
+<li>选择Preference &gt; Tools &gt; File Watchers，在右侧点+，选择Less，修改Output paths to refresh为项目的css文件夹的相对路径：../../css/$FileNameWithoutExtension$.css，此处需注意Program应当指向之前安装的less编译器，比如/usr/local/bin/lessc，如果为空，说明less编译器未安装成功，需要重新安装后再试。</li>
+<li>右键点击需要调试的页面，选择Debug “页面.html”，<strong>注意不能选Run …</strong></li>
+<li>Chrome会自动加载此页面，顶部如果出现”JetBrains IDE Support正在调试此浏览器”的字样，则说明配置成功。<strong>注意：这个提示不可关闭，关闭则失效</strong></li>
+<li>编辑less文件，可以将修改后的样式在Chrome中实时显示出来</li>
+<li>这个功能还可以用于实时编译Babel、Sass、SCSS、CoffeeScript等。</li>
+</ul>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://tyrival.github.io/posts/less-and-webstorm/" data-id="cje0wb4vk001f5wa7zgopibg0" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/swift-01-base/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Swift3 - 01：基础语法
+                
+            </div>
+        </a>
+    
+    
+        <a href="/posts/vue-02-base/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Vue 02：单页面开发基础</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+	<div id="commentContainer"></div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/iOS/">iOS</a></p>
+                            <p class="item-title"><a href="/posts/swift-01-base/" class="title">Swift3 - 01：基础语法</a></p>
+                            <p class="item-date"><time datetime="2017-07-03T03:51:04.000Z" itemprop="datePublished">2017-07-03</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/前端/">前端</a></p>
+                            <p class="item-title"><a href="/posts/less-and-webstorm/" class="title">Less入门 &amp; Webstorm实时编译</a></p>
+                            <p class="item-date"><time datetime="2017-06-20T12:26:12.000Z" itemprop="datePublished">2017-06-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/前端/">前端</a></p>
+                            <p class="item-title"><a href="/posts/vue-02-base/" class="title">Vue 02：单页面开发基础</a></p>
+                            <p class="item-date"><time datetime="2017-06-19T07:33:56.000Z" itemprop="datePublished">2017-06-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/前端/">前端</a></p>
+                            <p class="item-title"><a href="/posts/vue-01-initial/" class="title">Vue 01：初始化项目</a></p>
+                            <p class="item-date"><time datetime="2017-06-19T06:12:05.000Z" itemprop="datePublished">2017-06-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/硬件/">硬件</a></p>
+                            <p class="item-title"><a href="/posts/pi-02-thunder-remote/" class="title">树莓派 02：搭建迅雷远程下载服务器</a></p>
+                            <p class="item-date"><time datetime="2017-06-07T21:57:06.000Z" itemprop="datePublished">2017-06-08</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/服务器/">服务器</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/硬件/">硬件</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/f-k-ie/">f**k ie</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/less/">less</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberry/">raspberry</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/css/" style="font-size: 12px;">css</a> <a href="/tags/database/" style="font-size: 12px;">database</a> <a href="/tags/f-k-ie/" style="font-size: 14px;">f**k ie</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hadoop/" style="font-size: 18px;">hadoop</a> <a href="/tags/javascript/" style="font-size: 20px;">javascript</a> <a href="/tags/less/" style="font-size: 10px;">less</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/raspberry/" style="font-size: 12px;">raspberry</a> <a href="/tags/server/" style="font-size: 16px;">server</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/vue/" style="font-size: 12px;">vue</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 Tyrival<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

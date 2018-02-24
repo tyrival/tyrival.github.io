@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Hadoop 06：Ambari集群部署 | Tyrival</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="介绍Ambari搭建本地仓库并部署集群。">
+<meta name="keywords" content="hadoop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop 06：Ambari集群部署">
+<meta property="og:url" content="http://tyrival.github.io/posts/hadoop-06-ambari-cluster-install/index.html">
+<meta property="og:site_name" content="Tyrival">
+<meta property="og:description" content="介绍Ambari搭建本地仓库并部署集群。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-04-27T01:27:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hadoop 06：Ambari集群部署">
+<meta name="twitter:description" content="介绍Ambari搭建本地仓库并部署集群。">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Tyrival</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="http://www.tyrival.com">主页</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="http://www.tyrival.com">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">周晨煜</h2>
+            <h3 id="title">全栈程序员 &amp; 自学狂</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>无锡, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/tyrival">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                29
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                15
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/tyrival" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/Tyrival" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-hadoop-06-ambari-cluster-install" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Hadoop 06：Ambari集群部署
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/posts/hadoop-06-ambari-cluster-install/">
+            <time datetime="2017-04-27T00:50:57.000Z" itemprop="datePublished">2017-04-27</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/hadoop/">hadoop</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/hadoop/">hadoop</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>介绍Ambari搭建本地仓库并部署集群。</p>
+<a id="more"></a>
+<ol>
+<li>操作系统：CentOS-7-x86_64-DVD-1611<br>硬件要求：master要6G内存，slave要4G内存，客户端要2G内存</li>
+<li><p>环境准备，所有机器上都需要执行以下内容：</p>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 开机启动网卡 */</span></span><br><span class="line"><span class="meta"># vim /etc/sysconfig/network-scripts/ifcfg-eth0</span></span><br><span class="line">ONBOOT=yes</span><br><span class="line"><span class="meta"># service network restart  // 重启网卡</span></span><br><span class="line"><span class="meta"># ifconfig  // 查看IP</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 修改hostname */</span></span><br><span class="line"><span class="meta"># hostname master.o.cn </span></span><br><span class="line"><span class="meta"># vim /etc/sysconfig/network  // 永久修改hostname</span></span><br><span class="line">HOSTNAME=master.o.cn  <span class="comment">// slave机器命名为slave.o.cn</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 关闭iptables、防火墙、SELinux、PackageKit */</span></span><br><span class="line"><span class="meta"># service iptables stop   // 暂时关闭</span></span><br><span class="line"><span class="meta"># chkconfig iptables off  // 永久关闭</span></span><br><span class="line"><span class="meta"># systemctl stop firewalld.service  // 关闭firewall</span></span><br><span class="line"><span class="meta"># systemctl disable firewalld.service  // 禁止firewall开机启动</span></span><br><span class="line"><span class="meta"># vim /etc/selinux/config</span></span><br><span class="line">SELINUX=disabled</span><br><span class="line"><span class="meta"># vim /etc/yum/pluginconf.d/refresh-packagekit.conf</span></span><br><span class="line">enabled=<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 同步时钟 */</span></span><br><span class="line"><span class="meta"># yum install ntpd    // 安装同步时钟</span></span><br><span class="line"><span class="meta"># service ntpd start  // 启动</span></span><br><span class="line"><span class="meta"># chkconfig ntpd on   // 设置开机启动</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 重启生效 */</span></span><br><span class="line"><span class="meta"># reboot</span></span><br><span class="line"><span class="meta"># hostname</span></span><br><span class="line"><span class="meta"># service iptables status</span></span><br><span class="line"><span class="meta"># service ntpd status</span></span><br><span class="line"><span class="meta"># sestatus -v</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 添加域名映射 */</span></span><br><span class="line"><span class="meta"># vim /etc/hosts</span></span><br><span class="line"><span class="number">192.168</span><span class="number">.0</span><span class="number">.100</span>		master.o.cn</span><br><span class="line"><span class="number">192.168</span><span class="number">.0</span><span class="number">.101</span>		slave01.o.cn</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">/* SSH免密码登录 */</span></span><br><span class="line"><span class="comment">/* master */</span></span><br><span class="line"><span class="meta"># ssh-keygen -t rsa  // 按三次回车</span></span><br><span class="line"><span class="meta"># cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys</span></span><br><span class="line"><span class="meta"># scp /root/.ssh/id_rsa.pub root@slave01.o.cn:~/</span></span><br><span class="line"><span class="comment">/* slave */</span></span><br><span class="line"><span class="meta"># ssh-keygen -t rsa</span></span><br><span class="line"><span class="meta"># cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys</span></span><br><span class="line"><span class="meta"># cat id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys</span></span><br><span class="line"><span class="meta"># scp /root/.ssh/id_rsa.pub root@master.o.cn:~/</span></span><br><span class="line"><span class="comment">/* master */</span></span><br><span class="line"><span class="meta"># cat id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys</span></span><br><span class="line"><span class="meta"># ssh slave01.o.cn  // 测试是否成功</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>本地仓库搭建<br>在hortonworks.com下载Ambari、HDP、HDP-UTILS三个压缩包，将Ambari上传至仓库服务器的/var/www/html目录，HDP和HDP-UTILS上传至/var/www/html/hdp目录</p>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 安装httpd */</span></span><br><span class="line"><span class="meta"># yum install httpd  // 安装</span></span><br><span class="line"><span class="meta"># service httpd start  // 启动</span></span><br><span class="line"><span class="meta"># chkconfig httpd on  // 开机启动</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 解压缩 */</span></span><br><span class="line"><span class="meta"># tar -zxvf /var/www/html/Ambari.tar.gz</span></span><br><span class="line"><span class="meta"># tar -zxvf /var/www/html/hdp/HDP.tar.gz</span></span><br><span class="line"><span class="meta"># tar -zxvf /var/www/html/hdp/HDP-UTILS.tar.gz</span></span><br><span class="line"><span class="meta"># rm -rf /var/www/html/Ambari.tar.gz</span></span><br><span class="line"><span class="meta"># rm -rf /var/www/html/hdp/HDP.tar.gz</span></span><br><span class="line"><span class="meta"># rm -rf /var/www/html/hdp/HDP-UTILS.tar.gz</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>在浏览器中输入以下路径可以访问资源目录：</p>
+<table>
+<thead>
+<tr>
+<th>Repo</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ambari</td>
+<td>http://[仓库服务器IP]/ambari/centos7</td>
+</tr>
+<tr>
+<td>HDP</td>
+<td>http://[仓库服务器IP]/hdp/HDP/centos7</td>
+</tr>
+<tr>
+<td>HDP-UTILS</td>
+<td>http://[仓库服务器IP]/hdp</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>安装</li>
+</ol>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/* 编辑ambari.repo */</span><br><span class="line"># cp /var/www/html/ambari/centos7/ambari.repo ./</span><br><span class="line"># vim ambari.repo</span><br><span class="line">baseurl=http://master.o.cn/ambari.centos7</span><br><span class="line"># cp ambari.repo /etc/yum.repos.d/</span><br><span class="line"></span><br><span class="line">/* 安装ambari */</span><br><span class="line"># yum install ambari-server</span><br><span class="line">Installing : postgresql-libs<span class="string">-9</span>.2.18<span class="string">-1</span>.el7.x86_64 </span><br><span class="line">Installing : postgresql<span class="string">-9</span>.2.18<span class="string">-1</span>.el7.x86_64 </span><br><span class="line">Installing : postgresql-server<span class="string">-9</span>.2.18<span class="string">-1</span>.el7.x86_64 </span><br><span class="line">Installing : ambari-server<span class="string">-2</span>.5.0.3<span class="string">-1050</span>.x86_64 </span><br><span class="line">Verifying : ambari-server<span class="string">-2</span>.5.0.3<span class="string">-1050</span>.x86_64 </span><br><span class="line">Verifying : postgresql<span class="string">-9</span>.2.18<span class="string">-1</span>.el7.x86_64 </span><br><span class="line">Verifying : postgresql-server<span class="string">-9</span>.2.18<span class="string">-1</span>.el7.x86_64 </span><br><span class="line">Verifying : postgresql-libs<span class="string">-9</span>.2.18<span class="string">-1</span>.el7.x86_64</span><br><span class="line">Installed:</span><br><span class="line">ambari-server.x86_64 0:2.5.0.3<span class="string">-1050</span></span><br><span class="line">Dependency Installed:</span><br><span class="line">postgresql.x86_64 0:9.2.18<span class="string">-1</span>.el7 </span><br><span class="line">postgresql-libs.x86_64 0:9.2.18<span class="string">-1</span>.el7 </span><br><span class="line">postgresql-server.x86_64 0:9.2.18<span class="string">-1</span>.el7 </span><br><span class="line">Complete!</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>配置</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如需使用自定义数据库，需要在配置ambari前将数据库准备完成</span></span><br><span class="line"><span class="comment">// 不支持MSSQL Server和SQL Anywhere数据库</span></span><br><span class="line"># ambari-server setup</span><br><span class="line"><span class="number">1.</span> 如果SELinux未禁用，会跳出提示，选择y；</span><br><span class="line"><span class="number">2.</span> 用当前root用户运行ambari，选择n；</span><br><span class="line"><span class="number">3.</span> 如果iptables未禁用，会跳出提示，选择y；</span><br><span class="line"><span class="number">4.</span> 下载安装JDK1<span class="number">.8</span>，选择<span class="number">1</span>，；</span><br><span class="line"><span class="number">5.</span> 同意JDK协议，选择y；</span><br><span class="line"><span class="number">6.</span> 使用默认的PostgreSQL数据库配置（数据库ambari，用户名ambari，密码bigdata），选择n；</span><br><span class="line">	<span class="comment">// 如果使用自定义数据库，选择y，并且按照下列步骤：</span></span><br><span class="line">	<span class="comment">// Oracle：输入2；</span></span><br><span class="line">	<span class="comment">// MySQL/MariaDB：输入3；</span></span><br><span class="line">	<span class="comment">// PostgreSQL：输入4；</span></span><br><span class="line">	<span class="comment">// 输入数据库服务器IP、数据库名、用户名、密码；</span></span><br><span class="line">	<span class="comment">// 确定，选择y；</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># ambari-server start	<span class="comment">// 停止服务 ambari-server stop</span></span></span><br><span class="line">...</span><br><span class="line">Ambari <span class="built_in">Server</span> <span class="string">'start'</span> completed successfully.</span><br><span class="line"></span><br><span class="line"><span class="meta"># ambari-server status</span></span><br><span class="line">Using python  /usr/bin/python</span><br><span class="line">Ambari-server status</span><br><span class="line">Ambari <span class="built_in">Server</span> <span class="built_in">running</span></span><br><span class="line">Found Ambari <span class="built_in">Server</span> PID: <span class="number">11066</span> at: /var/<span class="built_in">run</span>/ambari-server/ambari-server.pid</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>登录Apache Ambari<br>http://[安装Ambari的系统IP]:8080<br>默认：账号admin，默认admin<br>如果无法登录，尝试以下操作</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> service iptables stop   // 暂时关闭</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> chkconfig iptables off  // 永久关闭</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> systemctl stop firewalld.service  // 关闭firewall</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> systemctl <span class="built_in">disable</span> firewalld.service  // 禁止firewall开机启动</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> service iptables status  // 查看防火墙状态</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> vim /etc/sysconfig/selinux  // 设置SELINUX=disabled</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动Ambari Cluster安装向导，选择Launch Install Wizard</p>
+<ul>
+<li>输入集群名：Tyrival；</li>
+<li>选择HDP版本和软件安装仓库，centos7：<br>HDP：<a href="http://master.o.cn/hdp/HDP/centos7" target="_blank" rel="noopener">http://master.o.cn/hdp/HDP/centos7</a><br>HDP-UTILS：<a href="http://master.o.cn/hdp" target="_blank" rel="noopener">http://master.o.cn/hdp</a></li>
+<li>在Target Hosts输入Hosts名称，可以输入多台服务器地址，SSH Private Key中上传输入master机器的id_rsa内容；</li>
+<li>下一步直到结束。</li>
+</ul>
+</li>
+<li>部署成功。</li>
+</ol>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://tyrival.github.io/posts/hadoop-06-ambari-cluster-install/" data-id="cje0wb4v6000o5wa754i6rrah" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/hadoop-07-hadoop-programming/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Hadoop 07：Hadoop编程
+                
+            </div>
+        </a>
+    
+    
+        <a href="/posts/hadoop-05-hdp-sandbox-sample/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Hadoop 05：HDP Sandbox</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+	<div id="commentContainer"></div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/iOS/">iOS</a></p>
+                            <p class="item-title"><a href="/posts/swift-01-base/" class="title">Swift3 - 01：基础语法</a></p>
+                            <p class="item-date"><time datetime="2017-07-03T03:51:04.000Z" itemprop="datePublished">2017-07-03</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/前端/">前端</a></p>
+                            <p class="item-title"><a href="/posts/less-and-webstorm/" class="title">Less入门 &amp; Webstorm实时编译</a></p>
+                            <p class="item-date"><time datetime="2017-06-20T12:26:12.000Z" itemprop="datePublished">2017-06-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/前端/">前端</a></p>
+                            <p class="item-title"><a href="/posts/vue-02-base/" class="title">Vue 02：单页面开发基础</a></p>
+                            <p class="item-date"><time datetime="2017-06-19T07:33:56.000Z" itemprop="datePublished">2017-06-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/前端/">前端</a></p>
+                            <p class="item-title"><a href="/posts/vue-01-initial/" class="title">Vue 01：初始化项目</a></p>
+                            <p class="item-date"><time datetime="2017-06-19T06:12:05.000Z" itemprop="datePublished">2017-06-19</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/硬件/">硬件</a></p>
+                            <p class="item-title"><a href="/posts/pi-02-thunder-remote/" class="title">树莓派 02：搭建迅雷远程下载服务器</a></p>
+                            <p class="item-date"><time datetime="2017-06-07T21:57:06.000Z" itemprop="datePublished">2017-06-08</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/服务器/">服务器</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/硬件/">硬件</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/f-k-ie/">f**k ie</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/less/">less</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberry/">raspberry</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/css/" style="font-size: 12px;">css</a> <a href="/tags/database/" style="font-size: 12px;">database</a> <a href="/tags/f-k-ie/" style="font-size: 14px;">f**k ie</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hadoop/" style="font-size: 18px;">hadoop</a> <a href="/tags/javascript/" style="font-size: 20px;">javascript</a> <a href="/tags/less/" style="font-size: 10px;">less</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/raspberry/" style="font-size: 12px;">raspberry</a> <a href="/tags/server/" style="font-size: 16px;">server</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/vue/" style="font-size: 12px;">vue</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 Tyrival<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
