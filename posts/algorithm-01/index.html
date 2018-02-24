@@ -3,21 +3,28 @@
 <head>
     <meta charset="utf-8">
     
-    <title>算法-01：聚类算法 | Tyrival</title>
+    <title>算法01：聚类算法 | Tyrival</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="聚类算法，是把距离作为特征，通过自下而上的迭代方式（距离对比），快速地把一群样本分成几个类别的过程。">
+    <meta name="description" content="聚类算法，是把一组样本中，把类似的样本聚在一起，不同的样本分开，最终形成几个簇。主要是基于已有数据进行分析，得出结论的过程。常见业务场景包括：基于用户位置信息的商业选址、中文地址标准化处理、用户画像、非人恶意流量识别、广告精准投放、图像分割等众多领域。">
 <meta name="keywords" content="algorithm">
 <meta property="og:type" content="article">
-<meta property="og:title" content="算法-01：聚类算法">
+<meta property="og:title" content="算法01：聚类算法">
 <meta property="og:url" content="http://tyrival.github.io/posts/algorithm-01/index.html">
 <meta property="og:site_name" content="Tyrival">
-<meta property="og:description" content="聚类算法，是把距离作为特征，通过自下而上的迭代方式（距离对比），快速地把一群样本分成几个类别的过程。">
+<meta property="og:description" content="聚类算法，是把一组样本中，把类似的样本聚在一起，不同的样本分开，最终形成几个簇。主要是基于已有数据进行分析，得出结论的过程。常见业务场景包括：基于用户位置信息的商业选址、中文地址标准化处理、用户画像、非人恶意流量识别、广告精准投放、图像分割等众多领域。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://tyrival.github.io/posts/algorithm-01/01.jpg">
-<meta property="og:updated_time" content="2018-02-24T05:57:50.169Z">
+<meta property="og:image" content="http://tyrival.github.io/posts/algorithm-01/km-01.jpg">
+<meta property="og:image" content="http://tyrival.github.io/posts/algorithm-01/km-02.jpg">
+<meta property="og:image" content="http://tyrival.github.io/posts/algorithm-01/km-03.jpg">
+<meta property="og:image" content="http://tyrival.github.io/posts/algorithm-01/km-04.png">
+<meta property="og:image" content="http://tyrival.github.io/posts/algorithm-01/km-05.png">
+<meta property="og:image" content="http://tyrival.github.io/posts/algorithm-01/dbscan-01.png">
+<meta property="og:image" content="http://tyrival.github.io/posts/algorithm-01/dbscan-02.png">
+<meta property="og:updated_time" content="2018-02-24T14:54:34.458Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="算法-01：聚类算法">
-<meta name="twitter:description" content="聚类算法，是把距离作为特征，通过自下而上的迭代方式（距离对比），快速地把一群样本分成几个类别的过程。">
+<meta name="twitter:title" content="算法01：聚类算法">
+<meta name="twitter:description" content="聚类算法，是把一组样本中，把类似的样本聚在一起，不同的样本分开，最终形成几个簇。主要是基于已有数据进行分析，得出结论的过程。常见业务场景包括：基于用户位置信息的商业选址、中文地址标准化处理、用户画像、非人恶意流量识别、广告精准投放、图像分割等众多领域。">
 <meta name="twitter:image" content="http://tyrival.github.io/posts/algorithm-01/01.jpg">
     
 
@@ -195,7 +202,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            算法-01：聚类算法
+            算法01：聚类算法
         </h1>
     
 
@@ -230,9 +237,103 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p><strong>聚类算法</strong>，是把距离作为特征，通过自下而上的迭代方式（距离对比），快速地把一群样本分成几个类别的过程。</p>
+            <p><strong>聚类算法</strong>，是把一组样本中，把类似的样本聚在一起，不同的样本分开，最终形成几个簇。主要是基于已有数据进行分析，得出结论的过程。常见业务场景包括：基于用户位置信息的商业选址、中文地址标准化处理、用户画像、非人恶意流量识别、广告精准投放、图像分割等众多领域。</p>
 <a id="more"></a>
+<p><strong>距离</strong>：在多维空间里，假设两个样本为<strong>a(x1, x2, x3 ,x4, … xn)</strong>，<strong>b(y1, y2, y3, y4, … yn)。</strong>那么他们之间的欧式距离（Euclidean distance）的计算公式是</p>
 <p><img src="01.jpg" alt=""></p>
+<p>除了欧式距离、还有Mahattan disatnce、Mahalanobis distance等。</p>
+<hr>
+<h2 id="K-Means"><a href="#K-Means" class="headerlink" title="K-Means"></a>K-Means</h2><p>K-Means是最常用的经典聚类算法。</p>
+<h5 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h5><ol>
+<li>在样本中随机选择K个点CM={M0, M1, … Mk}，作为每个类别的初始中心点。K由用户自定义，表示拥护想将样本分为K个簇；</li>
+<li>分别计算所有样本离这K个初始中心点的距离，并分别进行比较，样本离哪个中心点最近，就将其归入那个中心点簇中，从而将所有样本分为K个簇；</li>
+<li>在划分好的K个簇中，分别计算出新的中心点CN={N0, N1, … Nk}，使中心点到该簇中所有样本的距离之和最小；</li>
+<li>判断新获得的中心点CN是否与旧中心点CM一致，如不一致，<strong>则将CN赋值给CM</strong>，然后回到第2步，重新计算CN并再次比较；如一致则结束，即收敛。</li>
+</ol>
+<p>例如：</p>
+<p>设置K=3，并随机选择3个点，进行第一次聚类</p>
+<p><img src="km-01.jpg" alt=""></p>
+<p>第二次聚类</p>
+<p><img src="km-02.jpg" alt=""></p>
+<p>收敛时</p>
+<p><img src="km-03.jpg" alt=""></p>
+<h5 id="K的选择"><a href="#K的选择" class="headerlink" title="K的选择"></a>K的选择</h5><p>K的选择通常有4种方法</p>
+<ul>
+<li><p>按需选择</p>
+<p>根据需求或经验进行选择，例如把客户分为高级VIP、普通VIP、普通用户三类。</p>
+</li>
+<li><p>观察法</p>
+<p>将样本在坐标系中绘制，并用眼睛观察大致分为几类，这种方式有时会很模糊，而且只能用于低维度数据（1、2、3维），对于高维度数据，需要利用PCA算法降维，然后进行观察。</p>
+</li>
+<li><p>手肘法</p>
+<p>手肘法是一种间接的观察法，当K-Means算法完成后，我们将得到K个聚类的中心点。计算样本点到它所在的簇的中心点的距离，并求和作为模型的度量，记为D。</p>
+<p><img src="km-04.png" alt=""></p>
+<p>对于不同的K，最后我们会得到不同的中心点和聚类，所有会有不同的度量。</p>
+<p>我们把上面的例子用不同的K去计算，会得到不同的结果。把K作为横坐标，D作为纵坐标，我们可以得到下面的折线。</p>
+<p><img src="km-05.png" alt=""></p>
+<p>很显然K越大，距离和越小。但是我们注意到K=3是一个拐点，就像是我们的肘部一样，K=1到3下降很快，K=3之后趋于平稳。手肘法认为这个拐点就是最佳的K。</p>
+</li>
+<li><p>Gap Statistics方法</p>
+<p>计算Gap Statisitc，Gap statistic取得最大值所对应的K就是最佳的K，详细内容可以Google。</p>
+</li>
+</ul>
+<h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><ul>
+<li>逻辑简单，便于实现。</li>
+</ul>
+<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><ul>
+<li>较为低效，因为要计算所有的样本到中心的距离；</li>
+<li>K由用户定义，所以需要对数据由比较深刻的了解；</li>
+<li>“距离”的选择影响结果。欧式距离计算中，所有属性的权重是相同的，而实际应用时，各属性的权重实际上是有差别的，而不同的权重系数，会导致聚类结果出现较大差异。</li>
+</ul>
+<h4 id="应用："><a href="#应用：" class="headerlink" title="应用："></a>应用：</h4><p>由于K-Means简单易实现，所以经常被用来做pre-clustering，在使用更高级的算法前，先进行初步聚类。</p>
+<hr>
+<h2 id="层次聚类"><a href="#层次聚类" class="headerlink" title="层次聚类"></a>层次聚类</h2><p>层次聚类算法（Hierarchical clustering）通过分层来实现样本的聚类，包括Agglomerative和Divisive两种策略。Agglomerative初始假设每个样本属于独立的簇，自下而上，通过合并每层中相邻的簇进行汇聚，最终达到所有簇的最高层。Divisive初始假设所有样本属于一个簇，从上到下，通过分离每个簇中比较不相似的样本，直到每个样本都属于不同的簇。</p>
+<p><strong>Cluster dissimilarity</strong>：为了决定簇的合并（Agglomerative）或分解（Divisive）方式，需要一个指标来衡量两个簇所包含的样本的差异程度。一般来说，这个指标有两个组成部分，一个是Metric，用于衡量两个样本之间的距离，另一个是Linkage，用于衡量两个簇间的差异程度。Metric跟Linkage的选取直接影响最终结果。Metric包括<code>Euclidean distance</code>、<code>Squared Euclidean distance</code>、<code>Mahattan distance</code>、<code>Mahalanobis distance</code>等，Linkage包括<code>Single linkage</code>、<code>Complate linkage</code>、<code>Average linkage</code>等。</p>
+<h4 id="过程-1"><a href="#过程-1" class="headerlink" title="过程"></a>过程</h4><ol>
+<li>Agglomerative是每次将Linkage最小的两个簇合并，直到只剩一个最大的簇为止；</li>
+<li>Divisive是每次把一个簇分成两个，使这两个簇的Linkage最大，直到每个簇只剩一个样本为止；</li>
+<li>由于用户需要的结果不会是Agglomerative或Divisive的最终结果，所以用户在过程中何时停下，决定了最终的结果。</li>
+</ol>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>不像K-Means需要用户定义簇的数量。</li>
+</ul>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>没有目标函数，会一直计算直到极端情况出现；</li>
+<li>最终的结果取决于用户的主观想法，即何时停止；</li>
+<li>Cluster dissimilarity中的Metric和Linkage的选择没有统一标准。</li>
+</ul>
+<h4 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h4><p>查询结果聚类、信息检索</p>
+<hr>
+<h2 id="DBSCAN"><a href="#DBSCAN" class="headerlink" title="DBSCAN"></a>DBSCAN</h2><p>当样本分布不均匀，形状不规则时，K-Means和层次聚类算法都有可能失效，此时可以采用基于密度的聚类算法DBSCAN。例如下图样本：</p>
+<p><img src="dbscan-01.png" alt=""></p>
+<h4 id="过程-2"><a href="#过程-2" class="headerlink" title="过程"></a>过程</h4><ol>
+<li>设定扫描半径 Eps, 并规定扫描半径内的密度值。若当前点的半径范围内密度大于等于设定密度值，则设置当前点为核心点；若某点刚好在某核心点的半径边缘上，则设定此点为边界点；若某点既不是核心点又不是边界点，则此点为噪声点。</li>
+<li>删除噪声点。</li>
+<li>将距离在扫描半径内的所有核心点赋予边进行连通。</li>
+<li>每组连通的核心点标记为一个簇。</li>
+<li>将所有边界点指定到与之对应的核心点的簇总</li>
+</ol>
+<p>例如：</p>
+<p>假设扫描半径 Eps 为 1.5，密度阈值 threshold 为 3，可得下图：</p>
+<p><img src="dbscan-02.png" alt=""></p>
+<p>通过计算各个点之间的欧式距离及其所在扫描半径内的密度值来判断这些点属于核心点，边界点或是噪声点。因为我们设定了扫描半径为 1.5，密度阈值为 3，所以：</p>
+<ul>
+<li>P0 点为边界点，因为在以其为中心的扫描半径内只有两个点 P0 和 P1；</li>
+<li>P1 点为核心点，因为在以其为中心的扫描半径内有四个点 P0, P1, P2, P4 ；</li>
+<li>P8 为噪声点，因为其既非核心点，也非边界点；</li>
+<li>其他点依次类推。</li>
+</ul>
+<h5 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h5><ul>
+<li>可以对任意形状的稠密数据集进行聚类；（K-Means之类的聚类算法一般只适用于凸数据集）</li>
+<li>可以在聚类的同时发现异常点，对数据集中的异常点不敏感;</li>
+<li>聚类结果没有偏倚。（K-Means之类的聚类算法初始值对聚类结果有很大影响）</li>
+</ul>
+<h5 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h5><ul>
+<li>全局参数难以设定；</li>
+<li>难以识别空间簇相互邻接（颈问题）情况下的空间聚类操作。</li>
+</ul>
+<hr>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>除了以上三种聚类算法，还有BIRTH、CURE、SOM、FCM等多种聚类算法。 </p>
 
         
         </div>
@@ -353,7 +454,7 @@
                         
                         <div class="item-inner">
                             <p class="item-category"><a class="article-category-link" href="/categories/算法/">算法</a></p>
-                            <p class="item-title"><a href="/posts/algorithm-01/" class="title">算法-01：聚类算法</a></p>
+                            <p class="item-title"><a href="/posts/algorithm-01/" class="title">算法01：聚类算法</a></p>
                             <p class="item-date"><time datetime="2018-02-24T05:31:51.912Z" itemprop="datePublished">2018-02-24</time></p>
                         </div>
                     </li>
