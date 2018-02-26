@@ -5,18 +5,20 @@
     
     <title>算法03：回归算法 | Tyrival</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="回归算法，与分类算法类似，是基于已有的数据样本，对未来的样本进行预测。回归算法与分类算法也有不同，主要区别在于输出变量的类型。回归是定量的输出，即连续变量的预测；分类是定性的输出，即离散变量的预测。例如：预测明天的温度，是回归任务；预测明天是晴天还是雨天，是分类任务。所以，logistic回归只是用到了回归算法，但因其输出结果是决策边界，是不连续的，所以logistic回归属于分类。">
+    <meta name="description" content="回归算法（Regression）是研究自变量和因变量之间关系的一种预测模型技术。回归算法与分类算法类似，是基于已有的数据样本，对未来的样本进行预测。回归算法与分类算法也有不同，主要区别在于输出变量的类型。回归是定量的输出，即连续变量的预测；分类是定性的输出，即离散变量的预测。例如：预测明天的温度，是回归任务；预测明天是晴天还是雨天，是分类任务。回归算法可以通过三种方法分类：自变量的个数、因变量">
 <meta name="keywords" content="algorithm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="算法03：回归算法">
 <meta property="og:url" content="http://tyrival.github.io/posts/algorithm-03/index.html">
 <meta property="og:site_name" content="Tyrival">
-<meta property="og:description" content="回归算法，与分类算法类似，是基于已有的数据样本，对未来的样本进行预测。回归算法与分类算法也有不同，主要区别在于输出变量的类型。回归是定量的输出，即连续变量的预测；分类是定性的输出，即离散变量的预测。例如：预测明天的温度，是回归任务；预测明天是晴天还是雨天，是分类任务。所以，logistic回归只是用到了回归算法，但因其输出结果是决策边界，是不连续的，所以logistic回归属于分类。">
+<meta property="og:description" content="回归算法（Regression）是研究自变量和因变量之间关系的一种预测模型技术。回归算法与分类算法类似，是基于已有的数据样本，对未来的样本进行预测。回归算法与分类算法也有不同，主要区别在于输出变量的类型。回归是定量的输出，即连续变量的预测；分类是定性的输出，即离散变量的预测。例如：预测明天的温度，是回归任务；预测明天是晴天还是雨天，是分类任务。回归算法可以通过三种方法分类：自变量的个数、因变量">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-02-25T11:17:37.989Z">
+<meta property="og:image" content="http://tyrival.github.io/posts/algorithm-03/lr-01.png">
+<meta property="og:updated_time" content="2018-02-26T02:21:44.195Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="算法03：回归算法">
-<meta name="twitter:description" content="回归算法，与分类算法类似，是基于已有的数据样本，对未来的样本进行预测。回归算法与分类算法也有不同，主要区别在于输出变量的类型。回归是定量的输出，即连续变量的预测；分类是定性的输出，即离散变量的预测。例如：预测明天的温度，是回归任务；预测明天是晴天还是雨天，是分类任务。所以，logistic回归只是用到了回归算法，但因其输出结果是决策边界，是不连续的，所以logistic回归属于分类。">
+<meta name="twitter:description" content="回归算法（Regression）是研究自变量和因变量之间关系的一种预测模型技术。回归算法与分类算法类似，是基于已有的数据样本，对未来的样本进行预测。回归算法与分类算法也有不同，主要区别在于输出变量的类型。回归是定量的输出，即连续变量的预测；分类是定性的输出，即离散变量的预测。例如：预测明天的温度，是回归任务；预测明天是晴天还是雨天，是分类任务。回归算法可以通过三种方法分类：自变量的个数、因变量">
+<meta name="twitter:image" content="http://tyrival.github.io/posts/algorithm-03/lr-01.png">
     
 
     
@@ -228,10 +230,66 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p><strong>回归算法</strong>，与分类算法类似，是基于已有的数据样本，对未来的样本进行预测。回归算法与分类算法也有不同，主要区别在于输出变量的类型。回归是定量的输出，即连续变量的预测；分类是定性的输出，即离散变量的预测。例如：预测明天的温度，是回归任务；预测明天是晴天还是雨天，是分类任务。所以，logistic回归只是用到了回归算法，但因其输出结果是决策边界，是不连续的，所以logistic回归属于分类。</p>
+            <p><strong>回归算法</strong>（Regression）是研究自变量和因变量之间关系的一种预测模型技术。回归算法与分类算法类似，是基于已有的数据样本，对未来的样本进行预测。回归算法与分类算法也有不同，主要区别在于输出变量的类型。回归是定量的输出，即连续变量的预测；分类是定性的输出，即离散变量的预测。例如：预测明天的温度，是回归任务；预测明天是晴天还是雨天，是分类任务。回归算法可以通过三种方法分类：自变量的个数、因变量的类型和回归线的形状，主要包括线性回归、逻辑回归、多项式回归、逐步回归等多种算法。</p>
 <a id="more"></a>
+<p><strong>均值（mean）</strong>：又称平均数或平均值</p>
+<p>$$x=\cfrac{\sum_{i=1}^n x_i}{n}$$</p>
+<p><strong>中位数（median）</strong>：将数据中各数值按照大小顺序排列，位于中间位置的变量</p>
+<p><strong>众数（mode）</strong>：数据中出现次数最多的数</p>
+<p><strong>方差（variance）</strong>：描述离散程度的衡量方式，此处的$x$为平均数</p>
+<p>$$s^2=\cfrac{\sum_{i=1}^n (x_i-x)^2}{n}$$</p>
+<p><strong>标准差（standard deviation）</strong>：将方差开方就得到标准差</p>
 <hr>
-<h1 id="朴素贝叶斯（Naive-Bayes）"><a href="#朴素贝叶斯（Naive-Bayes）" class="headerlink" title="朴素贝叶斯（Naive Bayes）"></a>朴素贝叶斯（Naive Bayes）</h1>
+<h1 id="线性回归（Linear-Regression）"><a href="#线性回归（Linear-Regression）" class="headerlink" title="线性回归（Linear Regression）"></a>线性回归（Linear Regression）</h1><p>对于一组分布在二维坐标系上的样本，线性回归的目标是找到一条描述样本变化规律的线，使所有样本尽可能接近这条线。</p>
+<p><img src="lr-01.png" alt=""></p>
+<p>例如：找到房屋的面积、房间数对价格的影响，现有以下数据：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">面积</th>
+<th style="text-align:center">房间数</th>
+<th style="text-align:center">价格</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">210</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">40.0</td>
+</tr>
+<tr>
+<td style="text-align:center">160</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">33.1</td>
+</tr>
+<tr>
+<td style="text-align:center">240</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">36.9</td>
+</tr>
+<tr>
+<td style="text-align:center">141</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">23.2</td>
+</tr>
+<tr>
+<td style="text-align:center">300</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">54.0</td>
+</tr>
+</tbody>
+</table>
+<p>假设有一个公式，能够根据面积和房间数算出价格，这个公式不仅满足现在的样本数据，在新的数据上也要尽量准确，假定这个公式是线性函数：</p>
+<p>$$h(x)=\theta_0+\theta_1 x_1+\theta_2 x_2$$</p>
+<p>其中，$x_1$和$x_2$分别表示面积和房间数，$\theta$表示权重，$h(x)$是房屋的价格。</p>
+<p>首先把他看作一条$y=wx+b$的直线，其中$w$就是权重$\theta$，$x$为样本数据，$b$为截距，为了公式推导的方便，我们设$x_0=1$，上面的公式简化如下：</p>
+<p>$$h(x)=\theta_0 x_0+\theta_1 x_1+\theta_2 x_2=\sum_{i=0}^n \theta_i x_i=\theta^Tx$$</p>
+<p>现在只需得到$\theta$，即可得到最终的模型。想要模型能够准确描述当前数据，最理想的情况是这条线能通过所有样本数据，但实际上这几乎不可能，所以只能使$\theta$能够在当前数据集上尽可能准确。反过来想，当找到这条直线后，每个样本距离这条直线都存在一定的误差，即截距，当总截距最小时，这条直线就是我们需要的模型，所以我们只要找到截距与模型间的关系，就可以获得模型，这个关系被称为<strong>损失函数</strong>。</p>
+<p>$$J(\theta)=\cfrac{1}{2m}\sum_{i=1}^m (h(x^{(i)})-y^{(i)})^2$$</p>
+<p>其中，$m$为样本数量，按照这个公式，求解出使损失函数最小的$\theta$。</p>
+<hr>
+<h1 id="逻辑回归"><a href="#逻辑回归" class="headerlink" title="逻辑回归"></a>逻辑回归</h1><p>逻辑回归就是将上面线性回归预测的值，转化为概率值</p>
+
         
         </div>
         <footer class="article-footer">
@@ -241,7 +299,7 @@
 
 </div>
 
-    <a data-url="http://tyrival.github.io/posts/algorithm-03/" data-id="cje2pz4820006oha7fmu2n7ek" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://tyrival.github.io/posts/algorithm-03/" data-id="cje3khl7r0007pia7wnjfvw5n" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
