@@ -5,18 +5,18 @@
     
     <title>Python01：MacOS升级Python2到Python3，以及误删MacOS自带Python的解决方法 | Tyrival</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="刚开始学Python，想装个Python3.6，一看MacOS自带Python2.7，就在网上搜升级方法，结果第一条搜索是个坑！也不知道在哪搞了个半截的教程贴上来的，误人子弟！ 千万、千万、千万不要删除系统自带的Python2.7！！ 如果已经掉坑了，">
+    <meta name="description" content="刚开始学Python，想装个Python3.6，一看MacOS自带Python2.7，就在网上搜升级方法，结果第一条搜索是个坑！也不知道在哪搞了个半截的教程贴上来的，误人子弟！系统自带的Python2.7是很多系统级应用的依赖，比如xcode什么的。所以，千万、千万、千万不要删除系统自带的Python2.7！！ 如果已经掉坑了，可以用以下两种方法解决：">
 <meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python01：MacOS升级Python2到Python3，以及误删MacOS自带Python的解决方法">
 <meta property="og:url" content="http://tyrival.github.io/posts/python-01/index.html">
 <meta property="og:site_name" content="Tyrival">
-<meta property="og:description" content="刚开始学Python，想装个Python3.6，一看MacOS自带Python2.7，就在网上搜升级方法，结果第一条搜索是个坑！也不知道在哪搞了个半截的教程贴上来的，误人子弟！ 千万、千万、千万不要删除系统自带的Python2.7！！ 如果已经掉坑了，">
+<meta property="og:description" content="刚开始学Python，想装个Python3.6，一看MacOS自带Python2.7，就在网上搜升级方法，结果第一条搜索是个坑！也不知道在哪搞了个半截的教程贴上来的，误人子弟！系统自带的Python2.7是很多系统级应用的依赖，比如xcode什么的。所以，千万、千万、千万不要删除系统自带的Python2.7！！ 如果已经掉坑了，可以用以下两种方法解决：">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-03-03T12:03:09.162Z">
+<meta property="og:updated_time" content="2018-03-03T12:32:03.088Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python01：MacOS升级Python2到Python3，以及误删MacOS自带Python的解决方法">
-<meta name="twitter:description" content="刚开始学Python，想装个Python3.6，一看MacOS自带Python2.7，就在网上搜升级方法，结果第一条搜索是个坑！也不知道在哪搞了个半截的教程贴上来的，误人子弟！ 千万、千万、千万不要删除系统自带的Python2.7！！ 如果已经掉坑了，">
+<meta name="twitter:description" content="刚开始学Python，想装个Python3.6，一看MacOS自带Python2.7，就在网上搜升级方法，结果第一条搜索是个坑！也不知道在哪搞了个半截的教程贴上来的，误人子弟！系统自带的Python2.7是很多系统级应用的依赖，比如xcode什么的。所以，千万、千万、千万不要删除系统自带的Python2.7！！ 如果已经掉坑了，可以用以下两种方法解决：">
     
 
     
@@ -228,10 +228,29 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>刚开始学Python，想装个Python3.6，一看MacOS自带Python2.7，就在网上搜升级方法，结果第一条搜索是个坑！也不知道在哪搞了个半截的教程贴上来的，误人子弟！</p>
-<p><strong>千万、千万、千万不要删除系统自带的Python2.7！！</strong></p>
-<p>如果已经掉坑了，</p>
+            <p>刚开始学Python，想装个Python3.6，一看MacOS自带Python2.7，就在网上搜升级方法，结果第一条搜索是个坑！也不知道在哪搞了个半截的教程贴上来的，误人子弟！系统自带的Python2.7是很多系统级应用的依赖，比如xcode什么的。所以，<strong>千万、千万、千万不要删除系统自带的Python2.7！！</strong></p>
+<p>如果已经掉坑了，可以用以下两种方法解决：</p>
 <a id="more"></a>
+<ol>
+<li><p>从以下两个渠道获取相应的文件，替换误删或误改的文件</p>
+<ul>
+<li>TimeMachine的备份</li>
+<li>从另一台系统版本相同的Mac</li>
+</ul>
+<p>文件清单如下：</p>
+<blockquote>
+<p>/System/Library/Frameworks/Python.framework/Versions/2.7</p>
+<p>/System/Library/Frameworks/Python.framework/Versions/Current</p>
+<p>/usr/bin/pydoc</p>
+<p>/usr/bin/python</p>
+<p>/usr/bin/pythonw</p>
+<p>/usr/bin/python-config</p>
+</blockquote>
+</li>
+<li><p>修改python2.7的权限</p>
+</li>
+</ol>
+<figure class="highlight plain"><figcaption><span>chown -R root:wheel</span><a href="/System/Library/Frameworks/Python.framework/Versions/3.6```">link</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3. 将`~/.bash_profile`中增加的Python 3.6的PATH变量去掉</span><br><span class="line">4. 删掉`/System/Library/Frameworks/Python.framework/Versions/3.x`文件夹</span><br><span class="line">5. 用homebrew安装python3（homebrew安装方式自行搜索）</span><br><span class="line"></span><br><span class="line">```$ brew install python3</span><br></pre></td></tr></table></figure>
         
         </div>
         <footer class="article-footer">
