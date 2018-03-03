@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Tyrival">
 <meta property="og:description" content="刚开始学Python，想装个Python3.6，一看MacOS自带Python2.7，就在网上搜升级方法，结果第一条搜索是个坑！也不知道在哪搞了个半截的教程贴上来的，误人子弟！系统自带的Python2.7是很多系统级应用的依赖，比如xcode什么的。所以，千万、千万、千万不要删除系统自带的Python2.7！！！ 如果已经看了那个教程掉坑了，可以按照下面的方法解决。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-03-03T12:35:59.508Z">
+<meta property="og:updated_time" content="2018-03-03T12:38:08.394Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python01：MacOS升级Python2到Python3，以及误删系统自带Python的解决方法">
 <meta name="twitter:description" content="刚开始学Python，想装个Python3.6，一看MacOS自带Python2.7，就在网上搜升级方法，结果第一条搜索是个坑！也不知道在哪搞了个半截的教程贴上来的，误人子弟！系统自带的Python2.7是很多系统级应用的依赖，比如xcode什么的。所以，千万、千万、千万不要删除系统自带的Python2.7！！！ 如果已经看了那个教程掉坑了，可以按照下面的方法解决。">
@@ -231,7 +231,7 @@
             <p>刚开始学Python，想装个Python3.6，一看MacOS自带Python2.7，就在网上搜升级方法，结果第一条搜索是个坑！也不知道在哪搞了个半截的教程贴上来的，误人子弟！系统自带的Python2.7是很多系统级应用的依赖，比如xcode什么的。所以，<strong>千万、千万、千万不要删除系统自带的Python2.7！！！</strong></p>
 <p>如果已经看了那个教程掉坑了，可以按照下面的方法解决。</p>
 <a id="more"></a>
-<ol>
+<ul>
 <li><p>从以下两个渠道获取相应的文件，替换误删或误改的文件</p>
 <ul>
 <li>TimeMachine的备份</li>
@@ -249,13 +249,13 @@
 </li>
 <li><p>修改python2.7的权限</p>
 </li>
-</ol>
+</ul>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo chown -R <span class="string">root:</span>wheel <span class="regexp">/System/</span>Library<span class="regexp">/Frameworks/</span>Python.framework<span class="regexp">/Versions/</span><span class="number">2.7</span></span><br></pre></td></tr></table></figure>
-<ol>
+<ul>
 <li>将<code>~/.bash_profile</code>中增加的Python 3.6的PATH变量去掉</li>
 <li>删掉<code>/System/Library/Frameworks/Python.framework/Versions/3.x</code>文件夹</li>
 <li>用homebrew安装python3（homebrew安装方式自行搜索）</li>
-</ol>
+</ul>
 <figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">brew </span><span class="keyword">install </span>python3</span><br></pre></td></tr></table></figure>
 
         
