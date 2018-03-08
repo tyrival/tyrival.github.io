@@ -3,20 +3,15 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Hadoop 04：WordCount | Tyrival</title>
+    <title>标签: java | Tyrival</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="WordCount案例。">
-<meta name="keywords" content="hadoop">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Hadoop 04：WordCount">
-<meta property="og:url" content="http://tyrival.github.io/posts/hadoop-04-wordcount-sample/index.html">
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Tyrival">
+<meta property="og:url" content="http://tyrival.github.io/tags/java/index.html">
 <meta property="og:site_name" content="Tyrival">
-<meta property="og:description" content="WordCount案例。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-04-27T01:26:01.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hadoop 04：WordCount">
-<meta name="twitter:description" content="WordCount案例。">
+<meta name="twitter:title" content="Tyrival">
     
 
     
@@ -185,184 +180,86 @@
 </aside>
 
             
-            <section id="main"><article id="post-hadoop-04-wordcount-sample" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
+            <section id="main">
+<div class="timeline timeline-wrap">
+    <div class="timeline-row timeline-row-major">
+        <span class="node"><i class="fa fa-tag"></i></span>
+        <h1 class="title">#java</h1>
+    </div>
+    
+        <div class="timeline-row">
+            <span class="node"></span>
+            <div class="content">
                 
     
-        <h1 class="article-title" itemprop="name">
-            Hadoop 04：WordCount
+        <h1 itemprop="name">
+            <a class="timeline-article-title" href="/posts/java-reflect-invoke-method/">Java反射：通过方法名调用方法</a>
         </h1>
     
 
-                
-                    <div class="article-meta">
-                        
+                <div class="article-meta">
+                    
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/posts/hadoop-04-wordcount-sample/">
-            <time datetime="2017-04-27T00:49:31.000Z" itemprop="datePublished">2017-04-27</time>
+        <a href="/posts/java-reflect-invoke-method/">
+            <time datetime="2018-03-08T01:57:44.384Z" itemprop="datePublished">2018-03-08</time>
         </a>
     </div>
 
 
-                        
+                    
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/hadoop/">hadoop</a>
+        <a class="article-category-link" href="/categories/后端/">后端</a>
     </div>
 
-                        
+                    
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/hadoop/">hadoop</a>
+        <a class="tag-link" href="/tags/java/">java</a>
     </div>
 
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>WordCount案例。</p>
-<a id="more"></a>
-<ol>
-<li><p>创建文件目录</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> bin/hdfs dfs -mkdir /<span class="built_in">test</span>/input/</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>创建并编写input文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> touch wc.input</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> vim wc.input</span></span><br><span class="line">写若干个单词，用回车或空格分开</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>将input文件放入input目录</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> bin/hdfs dfs -put ./wc.input /<span class="built_in">test</span>/input/</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看文件内容</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> bin/hdfs dfs -text /<span class="built_in">test</span>/input/wc.input</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>运行WordCount案例</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># bin<span class="regexp">/yarn jar share/</span>hadoop<span class="regexp">/mapreduce/</span>hadoop-mapreduce-examples-<span class="number">2.8</span>.<span class="number">0</span>.jar wordcount <span class="regexp">/test/i</span>nput<span class="regexp">/wc.input /</span>test<span class="regexp">/output</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>查看结果</p>
-<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># bin/hdfs dfs -ls /test/output</span></span><br><span class="line">ound<span class="number"> 2 </span>items</span><br><span class="line">-rw-r--r--  <span class="number"> 1 </span>root supergroup         <span class="number"> 0 </span>2017-04-07 06:17 /test/output/_SUCCESS</span><br><span class="line">-rw-r--r--  <span class="number"> 1 </span>root supergroup        <span class="number"> 50 </span>2017-04-07 06:17 /test/output/part-r-00000</span><br><span class="line"></span><br><span class="line"><span class="comment"># bin/hdfs dfs -text /test/output/part-r-00000</span></span><br><span class="line">hadoop	4</span><br><span class="line">hdfs	2</span><br><span class="line">hello	1</span><br><span class="line">mapreduce	1</span><br><span class="line">wor1	1</span><br><span class="line">yarn	2</span><br></pre></td></tr></table></figure></li>
-</ol>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://tyrival.github.io/posts/hadoop-04-wordcount-sample/" data-id="cjehvuu8e000wpfa7ard19ixp" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-
-        </footer>
-    </div>
-    
-        
-<nav id="article-nav">
-    
-        <a href="/posts/hadoop-05-hdp-sandbox-sample/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    Hadoop 05：HDP Sandbox
-                
+                </div>
             </div>
+        </div>
+    
+        <div class="timeline-row">
+            <span class="node"></span>
+            <div class="content">
+                
+    
+        <h1 itemprop="name">
+            <a class="timeline-article-title" href="/posts/java-dynamic-compile/">Java动态编译</a>
+        </h1>
+    
+
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/posts/java-dynamic-compile/">
+            <time datetime="2018-03-08T00:44:12.000Z" itemprop="datePublished">2018-03-08</time>
         </a>
-    
-    
-        <a href="/posts/hadoop-03-start-yarn/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">Hadoop 03：启动YARN</div>
-        </a>
-    
-</nav>
+    </div>
 
 
-    
-</article>
+                    
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/后端/">后端</a>
+    </div>
 
+                    
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/java/">java</a>
+    </div>
 
+                </div>
+            </div>
+        </div>
     
-    
-        <section id="comments">
-	<div id="commentContainer"></div>
-</section>
-    
-
+</div>
 </section>
             
                 
