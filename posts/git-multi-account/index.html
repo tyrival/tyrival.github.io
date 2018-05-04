@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Tyrival">
 <meta property="og:description" content="使用GIthub的过程中，有时会出现同时用到多个账号的情况，这次介绍下怎样在MacOS下配置多个账号。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-04T14:32:37.239Z">
+<meta property="og:updated_time" content="2018-05-04T14:39:31.536Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MacOS下配置Github多账号教程">
 <meta name="twitter:description" content="使用GIthub的过程中，有时会出现同时用到多个账号的情况，这次介绍下怎样在MacOS下配置多个账号。">
@@ -250,6 +250,10 @@
 <li>使用git方法</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 其中用到的域名替换为config中对应的host参数值</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> website.github.com:tyrival/sample.git</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果使用Hexo，提交时可能会出现下列错误</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Error</span>: <span class="attribute">remote</span>: Permission to tyrival/tyrival.github.io.git denied to tyrivalhome.</span><br><span class="line"><span class="attribute">fatal</span>: unable to access <span class="string">'https://github.com/tyrival/tyrival.github.io.git/'</span>: The requested URL returned <span class="attribute">error</span>: <span class="number">403</span></span><br><span class="line"></span><br><span class="line"># 我修改了一下Hexo/_config.yml文件就正常了，不知道是不是问题所在</span><br><span class="line"><span class="attribute">deploy</span>:</span><br><span class="line">  <span class="attribute">type</span>: git   </span><br><span class="line">  <span class="attribute">repository</span>: git<span class="variable">@github</span>.<span class="attribute">com</span>:tyrival/tyrival.github.io.git</span><br><span class="line">  <span class="attribute">branch</span>: master</span><br><span class="line"># repository原本是http的路径，改成git@就好了</span><br></pre></td></tr></table></figure>
 
         
         </div>
