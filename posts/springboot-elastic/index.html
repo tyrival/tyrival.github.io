@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>SpringBoot(5)-基于Docker和Spring Boot部署开发Elastic | Tyrival</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="本文介绍基于Docker部署Elastic，并基于SpringBoot进行开发。">
+<meta name="keywords" content="server,java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot(5)-基于Docker和Spring Boot部署开发Elastic">
+<meta property="og:url" content="http://tyrival.github.io/posts/springboot-elastic/index.html">
+<meta property="og:site_name" content="Tyrival">
+<meta property="og:description" content="本文介绍基于Docker部署Elastic，并基于SpringBoot进行开发。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-08T06:43:21.473Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringBoot(5)-基于Docker和Spring Boot部署开发Elastic">
+<meta name="twitter:description" content="本文介绍基于Docker部署Elastic，并基于SpringBoot进行开发。">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/logo.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Tyrival</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="http://www.tyrival.com">主页</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="http://www.tyrival.com">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">周晨煜</h2>
+            <h3 id="title">程序员 &amp; 自学狂</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>无锡, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/tyrival">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                43
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                18
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/tyrival" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/Tyrival" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-springboot-elastic" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            SpringBoot(5)-基于Docker和Spring Boot部署开发Elastic
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/posts/springboot-elastic/">
+            <time datetime="2018-07-08T06:25:55.743Z" itemprop="datePublished">2018-07-08</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/后端/">后端</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/java/">java</a>, <a class="tag-link" href="/tags/server/">server</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>本文介绍基于Docker部署Elastic，并基于SpringBoot进行开发。</p>
+<a id="more"></a>
+<h2 id="1-源码"><a href="#1-源码" class="headerlink" title="1. 源码"></a>1. 源码</h2><p>地址：<a href="https://github.com/tyrival/SpringBoot-Dubbo-Sample" target="_blank" rel="noopener">https://github.com/tyrival/SpringBoot-Dubbo-Sample</a></p>
+<h2 id="2-Elasticsearch"><a href="#2-Elasticsearch" class="headerlink" title="2. Elasticsearch"></a>2. Elasticsearch</h2><h3 id="2-1-准备"><a href="#2-1-准备" class="headerlink" title="2.1 准备"></a>2.1 准备</h3><ul>
+<li>创建目录<code>~/Documents/Workspace/Docker/Elastic</code>，其中创建config、data、plugins三个文件夹，分别用来储存配置文件、数据、插件</li>
+<li>在config文件夹中创建配置文件elasticsearch.yml，只需要配置一个参数</li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">network.host:</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>elasticsearch.yml基本配置参数</li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">cluster.name:</span> <span class="string">elasticsearch</span></span><br><span class="line"><span class="string">配置es的集群名称，默认是elasticsearch，es会自动发现在同一网段下的es，如果在同一网段下有多个集群，就可以用这个属性来区分不同的集群。</span></span><br><span class="line"><span class="string">node.name:</span> <span class="string">"Franz Kafka"</span></span><br><span class="line"><span class="string">节点名，默认随机指定一个name列表中名字，该列表在es的jar包中config文件夹里name.txt文件中，其中有很多作者添加的有趣名字。</span></span><br><span class="line"><span class="string">node.master:</span> <span class="literal">true</span></span><br><span class="line"><span class="string">指定该节点是否有资格被选举成为node，默认是true，es是默认集群中的第一台机器为master，如果这台机挂了就会重新选举master。</span></span><br><span class="line"><span class="string">node.data:</span> <span class="literal">true</span></span><br><span class="line"><span class="string">指定该节点是否存储索引数据，默认为true。</span></span><br><span class="line"><span class="string">index.number_of_shards:</span> <span class="number">5</span></span><br><span class="line"><span class="string">设置默认索引分片个数，默认为5片。</span></span><br><span class="line"><span class="string">index.number_of_replicas:</span> <span class="number">1</span></span><br><span class="line"><span class="string">设置默认索引副本个数，默认为1个副本。</span></span><br><span class="line"><span class="string">path.conf:</span> <span class="string">/path/to/conf</span></span><br><span class="line"><span class="string">设置配置文件的存储路径，默认是es根目录下的config文件夹。</span></span><br><span class="line"><span class="string">path.data:</span> <span class="string">/path/to/data</span></span><br><span class="line"><span class="string">设置索引数据的存储路径，默认是es根目录下的data文件夹，可以设置多个存储路径，用逗号隔开，例：</span></span><br><span class="line"><span class="string">path.data:</span> <span class="string">/path/to/data1,/path/to/data2</span></span><br><span class="line"><span class="string">path.work:</span> <span class="string">/path/to/work</span></span><br><span class="line"><span class="string">设置临时文件的存储路径，默认是es根目录下的work文件夹。</span></span><br><span class="line"><span class="string">path.logs:</span> <span class="string">/path/to/logs</span></span><br><span class="line"><span class="string">设置日志文件的存储路径，默认是es根目录下的logs文件夹</span></span><br><span class="line"><span class="string">path.plugins:</span> <span class="string">/path/to/plugins</span></span><br><span class="line"><span class="string">设置插件的存放路径，默认是es根目录下的plugins文件夹</span></span><br><span class="line"><span class="string">bootstrap.mlockall:</span> <span class="literal">true</span></span><br><span class="line"><span class="string">设置为true来锁住内存。因为当jvm开始swapping时es的效率会降低，所以要保证它不swap，可以把ES_MIN_MEM和</span> <span class="string">ES_MAX_MEM两个环境变量设置成同一个值，并且保证机器有足够的内存分配给es。同时也要允许elasticsearch的进程可以锁住内存，linux下可以通过`ulimit</span> <span class="bullet">-l</span> <span class="string">unlimited`命令。</span></span><br><span class="line"><span class="string">network.bind_host:</span> <span class="number">192.168</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="string">设置绑定的ip地址，可以是ipv4或ipv6的，默认为0.0.0.0。</span> </span><br><span class="line"><span class="string">network.publish_host:</span> <span class="number">192.168</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="string">设置其它节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址。</span></span><br><span class="line"><span class="string">network.host:</span> <span class="number">192.168</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="string">这个参数是用来同时设置bind_host和publish_host上面两个参数。</span></span><br><span class="line"><span class="string">transport.tcp.port:</span> <span class="number">9300</span></span><br><span class="line"><span class="string">设置节点间交互的tcp端口，默认是9300。</span></span><br><span class="line"><span class="string">transport.tcp.compress:</span> <span class="literal">true</span></span><br><span class="line"><span class="string">设置是否压缩tcp传输时的数据，默认为false，不压缩。</span></span><br><span class="line"><span class="string">http.port:</span> <span class="number">9200</span></span><br><span class="line"><span class="string">设置对外服务的http端口，默认为9200。</span></span><br><span class="line"><span class="string">http.max_content_length:</span> <span class="number">100</span><span class="string">mb</span></span><br><span class="line"><span class="string">设置内容的最大容量，默认100mb</span></span><br><span class="line"><span class="string">http.enabled:</span> <span class="literal">false</span></span><br><span class="line"><span class="string">是否使用http协议对外提供服务，默认为true，开启。</span></span><br><span class="line"><span class="string">gateway.type:</span> <span class="string">local</span></span><br><span class="line"><span class="string">gateway的类型，默认为local即为本地文件系统，可以设置为本地文件系统，分布式文件系统，Hadoop的HDFS，和amazon的s3服务器。</span></span><br><span class="line"><span class="string">gateway.recover_after_nodes:</span> <span class="number">1</span></span><br><span class="line"><span class="string">设置集群中N个节点启动时进行数据恢复，默认为1。</span></span><br><span class="line"><span class="string">gateway.recover_after_time:</span> <span class="number">5</span><span class="string">m</span></span><br><span class="line"><span class="string">设置初始化数据恢复进程的超时时间，默认是5分钟。</span></span><br><span class="line"><span class="string">gateway.expected_nodes:</span> <span class="number">2</span></span><br><span class="line"><span class="string">设置这个集群中节点的数量，默认为2，一旦这N个节点启动，就会立即进行数据恢复。</span></span><br><span class="line"><span class="string">cluster.routing.allocation.node_initial_primaries_recoveries:</span> <span class="number">4</span></span><br><span class="line"><span class="string">初始化数据恢复时，并发恢复线程的个数，默认为4。</span></span><br><span class="line"><span class="string">cluster.routing.allocation.node_concurrent_recoveries:</span> <span class="number">2</span></span><br><span class="line"><span class="string">添加删除节点或负载均衡时并发恢复线程的个数，默认为4。</span></span><br><span class="line"><span class="string">indices.recovery.max_size_per_sec:</span> <span class="number">0</span></span><br><span class="line"><span class="string">设置数据恢复时限制的带宽，如入100mb，默认为0，即无限制。</span></span><br><span class="line"><span class="string">indices.recovery.concurrent_streams:</span> <span class="number">5</span></span><br><span class="line"><span class="string">设置这个参数来限制从其它分片恢复数据时最大同时打开并发流的个数，默认为5。</span></span><br><span class="line"><span class="string">discovery.zen.minimum_master_nodes:</span> <span class="number">1</span></span><br><span class="line"><span class="string">设置这个参数来保证集群中的节点可以知道其它N个有master资格的节点。默认为1，对于大的集群来说，可以设置大一点的值（2-4）</span></span><br><span class="line"><span class="string">discovery.zen.ping.timeout:</span> <span class="number">3</span><span class="string">s</span></span><br><span class="line"><span class="string">设置集群中自动发现其它节点时ping连接超时时间，默认为3秒，对于比较差的网络环境可以高点的值来防止自动发现时出错。</span></span><br><span class="line"><span class="string">discovery.zen.ping.multicast.enabled:</span> <span class="literal">false</span></span><br><span class="line"><span class="string">设置是否打开多播发现节点，默认是true。</span></span><br><span class="line"><span class="string">discovery.zen.ping.unicast.hosts:</span> <span class="string">["host1",</span> <span class="string">"host2:port"</span><span class="string">,</span> <span class="string">"host3[portX-portY]"</span><span class="string">]</span></span><br><span class="line"><span class="string">设置集群中master节点的初始列表，可以通过这些节点来自动发现新加入集群的节点。</span></span><br><span class="line"><span class="string">下面是一些查询时的慢日志参数设置</span></span><br><span class="line"><span class="string">index.search.slowlog.level:</span> <span class="string">TRACE</span></span><br><span class="line"><span class="string">index.search.slowlog.threshold.query.warn:</span> <span class="number">10</span><span class="string">s</span></span><br><span class="line"><span class="string">index.search.slowlog.threshold.query.info:</span> <span class="number">5</span><span class="string">s</span></span><br><span class="line"><span class="string">index.search.slowlog.threshold.query.debug:</span> <span class="number">2</span><span class="string">s</span></span><br><span class="line"><span class="string">index.search.slowlog.threshold.query.trace:</span> <span class="number">500</span><span class="string">ms</span></span><br><span class="line"><span class="string">index.search.slowlog.threshold.fetch.warn:</span> <span class="number">1</span><span class="string">s</span></span><br><span class="line"><span class="string">index.search.slowlog.threshold.fetch.info:</span> <span class="number">800</span><span class="string">ms</span></span><br><span class="line"><span class="string">index.search.slowlog.threshold.fetch.debug:500ms</span></span><br><span class="line"><span class="string">index.search.slowlog.threshold.fetch.trace:</span> <span class="number">200</span><span class="string">ms</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-2-容器部署"><a href="#2-2-容器部署" class="headerlink" title="2.2 容器部署"></a>2.2 容器部署</h3><h4 id="2-2-1-创建容器"><a href="#2-2-1-创建容器" class="headerlink" title="2.2.1 创建容器"></a>2.2.1 创建容器</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -e "cluster.name=elasticsearch" 集群名称，相同名称的节点会进入同一集群</span></span><br><span class="line"><span class="comment"># -e "node.name=elas" 节点名称，相同集群中节点名称保持唯一</span></span><br><span class="line"><span class="comment"># -v 将配置文件、数据、插件挂载到容器中，使其保存在Docker外</span></span><br><span class="line">$ docker run -d -p 9200:9200 -p 9300:9300 --name elas -e <span class="string">"cluster.name=elasticsearch"</span> -e <span class="string">"node.name=elas"</span> -v ~/Documents/Workspace/Docker/Elastic/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml -v ~/Documents/Workspace/Docker/Elastic/data:/usr/share/elasticsearch/data -v ~/Documents/Workspace/Docker/Elastic/plugins:/usr/share/elasticsearch/plugins docker.elastic.co/elasticsearch/elasticsearch:6.3.0</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-2-安装插件"><a href="#2-2-2-安装插件" class="headerlink" title="2.2.2 安装插件"></a>2.2.2 安装插件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">### 进入容器</span></span><br><span class="line">$ docker <span class="built_in">exec</span> -it elas /bin/bash</span><br><span class="line"></span><br><span class="line"><span class="comment">### 安装分词插件</span></span><br><span class="line"><span class="comment"># ./bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.3.0/elasticsearch-analysis-ik-6.3.0.zip</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 下面两个插件，如果不将本地plugins文件夹挂载到容器中，是会自动生成的，现在需手工安装</span></span><br><span class="line"><span class="comment"># ./bin/elasticsearch-plugin install ingest-geoip</span></span><br><span class="line"><span class="comment"># ./bin/elasticsearch-plugin install ingest-user-agent</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 查看插件，三个插件安装完成</span></span><br><span class="line"><span class="comment"># ls plugins/</span></span><br><span class="line">analysis-ik  ingest-geoip  ingest-user-agent</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-3-常用命令"><a href="#2-2-3-常用命令" class="headerlink" title="2.2.3 常用命令"></a>2.2.3 常用命令</h4><p>Elasticsearch是通过http请求进行操作的，常用指令如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">###### Elasticsearch6.x 对content-type验证采用了严格模式，不加--header会报错 </span></span><br><span class="line"><span class="comment">###### Content-Type header [application/x-www-form-urlencoded] is not supported</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建index=accounts，其中包括一个type=person，</span></span><br><span class="line"><span class="comment"># person包含三个字段，user，title，desc，都启用了ik分词插件</span></span><br><span class="line">$ curl --header <span class="string">"content-type: application/JSON"</span> -X PUT <span class="string">'localhost:9200/accounts'</span> -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  "mappings": &#123;</span></span><br><span class="line"><span class="string">    "person": &#123;</span></span><br><span class="line"><span class="string">      "properties": &#123;</span></span><br><span class="line"><span class="string">        "user": &#123;</span></span><br><span class="line"><span class="string">          "type": "text",</span></span><br><span class="line"><span class="string">          "analyzer": "ik_max_word",</span></span><br><span class="line"><span class="string">          "search_analyzer": "ik_max_word"</span></span><br><span class="line"><span class="string">        &#125;,</span></span><br><span class="line"><span class="string">        "title": &#123;</span></span><br><span class="line"><span class="string">          "type": "text",</span></span><br><span class="line"><span class="string">          "analyzer": "ik_max_word",</span></span><br><span class="line"><span class="string">          "search_analyzer": "ik_max_word"</span></span><br><span class="line"><span class="string">        &#125;,</span></span><br><span class="line"><span class="string">        "desc": &#123;</span></span><br><span class="line"><span class="string">          "type": "text",</span></span><br><span class="line"><span class="string">          "analyzer": "ik_max_word",</span></span><br><span class="line"><span class="string">          "search_analyzer": "ik_max_word"</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">      &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看所有index</span></span><br><span class="line">$ curl -X GET <span class="string">'http://localhost:9200/_cat/indices?v'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除index=accounts</span></span><br><span class="line">$ curl -X DELETE <span class="string">'localhost:9200/accounts'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在index=person创建id为1的一条记录，包括三个属性</span></span><br><span class="line"><span class="comment"># 此时如果index=accounts不存在，会自动创建</span></span><br><span class="line"><span class="comment"># PUT操作必须指定id，与post不同</span></span><br><span class="line">$ curl --header <span class="string">"content-type: application/JSON"</span> -X PUT <span class="string">'localhost:9200/accounts/person/1?pretty'</span> -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  "user": "张三",</span></span><br><span class="line"><span class="string">  "title": "工程师",</span></span><br><span class="line"><span class="string">  "desc": "数据库管理"</span></span><br><span class="line"><span class="string">&#125;'</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># POST时可以不指定id，有系统自动生成</span></span><br><span class="line">$ curl -X POST <span class="string">'localhost:9200/accounts/person'</span> -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  "user": "李四",</span></span><br><span class="line"><span class="string">  "title": "工程师",</span></span><br><span class="line"><span class="string">  "desc": "系统管理"</span></span><br><span class="line"><span class="string">&#125;'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看type=person中id为1的记录</span></span><br><span class="line">$ curl <span class="string">'localhost:9200/accounts/person/1?pretty'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除type=person中id=1的记录</span></span><br><span class="line">$ curl -X DELETE <span class="string">'localhost:9200/accounts/person/1'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询所有记录</span></span><br><span class="line">$ curl <span class="string">'localhost:9200/accounts/person/_search?pretty=true'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询满足desc包含‘管理’的记录</span></span><br><span class="line">$ curl --header <span class="string">"content-type: application/JSON"</span> <span class="string">'localhost:9200/accounts/person/_search?pretty'</span>  -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  "query" : &#123; "match" : &#123; "desc" : "管理" &#125;&#125;,</span></span><br><span class="line"><span class="string">  "from": 1,</span></span><br><span class="line"><span class="string">  "size": 1</span></span><br><span class="line"><span class="string">&#125;'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 多个关键词用空格分开，表示OR</span></span><br><span class="line">$ curl --header <span class="string">"content-type: application/JSON"</span> <span class="string">'localhost:9200/accounts/person/_search?pretty'</span>  -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  "query" : &#123; "match" : &#123; "desc" : "数据库 系统" &#125;&#125;</span></span><br><span class="line"><span class="string">&#125;'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以下写法表示AND</span></span><br><span class="line">$ curl --header <span class="string">"content-type: application/JSON"</span> <span class="string">'localhost:9200/accounts/person/_search?pretty'</span>  -d <span class="string">'</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  "query": &#123;</span></span><br><span class="line"><span class="string">    "bool": &#123;</span></span><br><span class="line"><span class="string">      "must": [</span></span><br><span class="line"><span class="string">        &#123; "match": &#123; "desc": "数据库" &#125; &#125;,</span></span><br><span class="line"><span class="string">        &#123; "match": &#123; "desc": "系统" &#125; &#125;</span></span><br><span class="line"><span class="string">      ]</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;'</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-3-开发"><a href="#2-3-开发" class="headerlink" title="2.3 开发"></a>2.3 开发</h3><h4 id="2-3-1-模块"><a href="#2-3-1-模块" class="headerlink" title="2.3.1 模块"></a>2.3.1 模块</h4><p>与solr类似，创建模块，创建相应的接口、配置文件等。</p>
+<h4 id="2-3-2-pom-xml"><a href="#2-3-2-pom-xml" class="headerlink" title="2.3.2 pom.xml"></a>2.3.2 pom.xml</h4><p>参考solr模块的pom.xml，区别在于依赖如下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.elasticsearch<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>elasticsearch<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-elasticsearch<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.data<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-data-elasticsearch<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-databind<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>net.java.dev.jna<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jna<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.google.code.gson<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>gson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-3-3-application-properties"><a href="#2-3-3-application-properties" class="headerlink" title="2.3.3 application.properties"></a>2.3.3 application.properties</h4><p>配置文件与solr类似，区别在于把solr的配置项换成elastic的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">## Elastic</span><br><span class="line"># 节点名字，默认elasticsearch</span><br><span class="line">spring.data.elasticsearch.cluster-name=elasticsearch</span><br><span class="line"># 节点地址，多个节点用逗号隔开</span><br><span class="line">spring.data.elasticsearch.cluster-nodes=127.0.0.1:9300</span><br><span class="line"># spring.data.elasticsearch.local=false</span><br><span class="line">spring.data.elasticsearch.repositories.enable=true</span><br></pre></td></tr></table></figure>
+<h4 id="2-3-4-ArticleRepository-java"><a href="#2-3-4-ArticleRepository-java" class="headerlink" title="2.3.4 ArticleRepository.java"></a>2.3.4 ArticleRepository.java</h4><p>ArticleRepository相当于通常意义上的DAO层，用来与数据库直接进行交互</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.tyrival.entity.article.Article;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.elasticsearch.repository.ElasticsearchRepository;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ArticleRepository</span> <span class="keyword">extends</span> <span class="title">ElasticsearchRepository</span>&lt;<span class="title">Article</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-3-5-ArticleServiceImpl-java"><a href="#2-3-5-ArticleServiceImpl-java" class="headerlink" title="2.3.5 ArticleServiceImpl.java"></a>2.3.5 ArticleServiceImpl.java</h4><p>Service层直接调用articleRepository进行数据的操作，并将服务注册到Zookeeper</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.alibaba.dubbo.config.annotation.Service;</span><br><span class="line"><span class="keyword">import</span> com.tyrival.common.article.ArticleService;</span><br><span class="line"><span class="keyword">import</span> com.tyrival.elastic.repo.ArticleRepository;</span><br><span class="line"><span class="keyword">import</span> com.tyrival.entity.article.Article;</span><br><span class="line"><span class="keyword">import</span> org.elasticsearch.index.query.QueryStringQueryBuilder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@org</span>.springframework.stereotype.Service</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArticleServiceImpl</span> <span class="keyword">implements</span> <span class="title">ArticleService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ArticleRepository articleRepository;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">create</span><span class="params">(Article article)</span> </span>&#123;</span><br><span class="line">        articleRepository.save(article);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete</span><span class="params">(Article article)</span> </span>&#123;</span><br><span class="line">        articleRepository.delete(article);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Article&gt; <span class="title">list</span><span class="params">(String keyword)</span> </span>&#123;</span><br><span class="line">        QueryStringQueryBuilder builder = <span class="keyword">new</span> QueryStringQueryBuilder(keyword);</span><br><span class="line">        Iterable&lt;Article&gt; searchResult = articleRepository.search(builder);</span><br><span class="line">        List&lt;Article&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (Iterator iter = searchResult.iterator(); iter.hasNext();) &#123;</span><br><span class="line">            list.add((Article) iter.next());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://tyrival.github.io/posts/springboot-elastic/" data-id="cjjch0b5f0003k9cwaa2s9mj8" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/springboot-tesseract/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    SpringBoot(6)-Spring Boot与Tesseract集成
+                
+            </div>
+        </a>
+    
+    
+        <a href="/posts/springboot-solr/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">SpringBoot(4)-基于Docker和Spring Boot部署开发Solr</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+	<div id="commentContainer"></div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/后端/">后端</a></p>
+                            <p class="item-title"><a href="/posts/springboot-tesseract/" class="title">SpringBoot(6)-Spring Boot与Tesseract集成</a></p>
+                            <p class="item-date"><time datetime="2018-07-08T06:26:12.012Z" itemprop="datePublished">2018-07-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/后端/">后端</a></p>
+                            <p class="item-title"><a href="/posts/springboot-elastic/" class="title">SpringBoot(5)-基于Docker和Spring Boot部署开发Elastic</a></p>
+                            <p class="item-date"><time datetime="2018-07-08T06:25:55.743Z" itemprop="datePublished">2018-07-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/后端/">后端</a></p>
+                            <p class="item-title"><a href="/posts/springboot-solr/" class="title">SpringBoot(4)-基于Docker和Spring Boot部署开发Solr</a></p>
+                            <p class="item-date"><time datetime="2018-07-08T06:25:50.270Z" itemprop="datePublished">2018-07-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/后端/">后端</a></p>
+                            <p class="item-title"><a href="/posts/springboot-aop/" class="title">SpringBoot(2)-Spring Boot中的AOP</a></p>
+                            <p class="item-date"><time datetime="2018-07-08T06:25:37.774Z" itemprop="datePublished">2018-07-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/后端/">后端</a></p>
+                            <p class="item-title"><a href="/posts/springboot-dubbo-mybatis-redis/" class="title">SpringBoot(1)-基于Spring Boot、Dubbo、Redis、Mybtis搭建分布式开发项目</a></p>
+                            <p class="item-date"><time datetime="2018-06-19T00:49:02.129Z" itemprop="datePublished">2018-06-19</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/后端/">后端</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/服务器/">服务器</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/硬件/">硬件</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/f-k-ie/">f**k ie</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/less/">less</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberry/">raspberry</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/algorithm/" style="font-size: 13.33px;">algorithm</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/css/" style="font-size: 11.67px;">css</a> <a href="/tags/database/" style="font-size: 11.67px;">database</a> <a href="/tags/f-k-ie/" style="font-size: 13.33px;">f**k ie</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/hadoop/" style="font-size: 16.67px;">hadoop</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/javascript/" style="font-size: 20px;">javascript</a> <a href="/tags/less/" style="font-size: 10px;">less</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/raspberry/" style="font-size: 11.67px;">raspberry</a> <a href="/tags/server/" style="font-size: 18.33px;">server</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/vue/" style="font-size: 11.67px;">vue</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 Tyrival<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

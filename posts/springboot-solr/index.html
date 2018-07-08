@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>SpringBoot(4)-基于Docker和Spring Boot部署开发Solr | Tyrival</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="本文介绍基于Docker部署Solr，并基于SpringBoot进行开发。">
+<meta name="keywords" content="server,java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot(4)-基于Docker和Spring Boot部署开发Solr">
+<meta property="og:url" content="http://tyrival.github.io/posts/springboot-solr/index.html">
+<meta property="og:site_name" content="Tyrival">
+<meta property="og:description" content="本文介绍基于Docker部署Solr，并基于SpringBoot进行开发。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-08T06:43:26.704Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringBoot(4)-基于Docker和Spring Boot部署开发Solr">
+<meta name="twitter:description" content="本文介绍基于Docker部署Solr，并基于SpringBoot进行开发。">
+    
+
+    
+
+    
+        <link rel="icon" href="/css/images/logo.png" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Tyrival</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="http://www.tyrival.com">主页</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="http://www.tyrival.com">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">周晨煜</h2>
+            <h3 id="title">程序员 &amp; 自学狂</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>无锡, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/tyrival">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                43
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                18
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/tyrival" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://twitter.com/Tyrival" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-springboot-solr" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            SpringBoot(4)-基于Docker和Spring Boot部署开发Solr
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/posts/springboot-solr/">
+            <time datetime="2018-07-08T06:25:50.270Z" itemprop="datePublished">2018-07-08</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/后端/">后端</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/java/">java</a>, <a class="tag-link" href="/tags/server/">server</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>本文介绍基于Docker部署Solr，并基于SpringBoot进行开发。</p>
+<a id="more"></a>
+<h2 id="1-源码"><a href="#1-源码" class="headerlink" title="1. 源码"></a>1. 源码</h2><p>地址：<a href="https://github.com/tyrival/SpringBoot-Dubbo-Sample" target="_blank" rel="noopener">https://github.com/tyrival/SpringBoot-Dubbo-Sample</a></p>
+<h2 id="2-Solr"><a href="#2-Solr" class="headerlink" title="2. Solr"></a>2. Solr</h2><h3 id="2-1-准备"><a href="#2-1-准备" class="headerlink" title="2.1 准备"></a>2.1 准备</h3><ul>
+<li>下载工程solr-7.4.0.zip（不带src的），解压缩。下载地址：<a href="http://lucene.apache.org/solr/" target="_blank" rel="noopener">http://lucene.apache.org/solr/</a></li>
+<li>创建目录<code>~/Documents/Workspace/Docker/Solr</code>，用来存储solr的所有cores</li>
+<li>将工程<code>solr-7.4.0/server/solr</code>下所有文件，复制到刚创建的<code>~/Documents/Workspace/Docker/Solr</code>中</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载镜像solr:7.4.0，此版本需要和之前下载的工程版本保持一致</span></span><br><span class="line">$ docker pull solr</span><br><span class="line"></span><br><span class="line"><span class="comment"># 已经下载过的镜像，可以通过以下代码查看版本</span></span><br><span class="line"><span class="comment"># Config.ENV = [...SOLR_VERSION=7.4.0...]</span></span><br><span class="line">$ docker image inspect solr</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-容器部署"><a href="#2-2-容器部署" class="headerlink" title="2.2 容器部署"></a>2.2 容器部署</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># --name 命名容器名称</span></span><br><span class="line"><span class="comment"># -v 将本地的文件夹挂载到容器内的文件夹，使solr的所有cores储存到本地目录</span></span><br><span class="line"><span class="comment"># -p 将本地端口映射到容器端口</span></span><br><span class="line">$ docker run --privileged=<span class="literal">true</span> --name solr  -v ~/Documents/Workspace/Docker/Solr:/opt/solr/server/solr -d -p 8983:8983 -t solr</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-创建core"><a href="#2-3-创建core" class="headerlink" title="2.3 创建core"></a>2.3 创建core</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在name=solr的容器中，创建core=tyrival</span></span><br><span class="line">$ docker <span class="built_in">exec</span> -it --user=solr solr bin/solr create_core -c tyrival</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时在`~/Documents/Workspace/Docker/Solr`中可以看到多了tyrival文件夹，即新建的core</span></span><br><span class="line"><span class="comment"># 在浏览器中访问http://localhost:8983/solr，会显示Solr Admin界面</span></span><br><span class="line"><span class="comment"># 在左侧菜单的Core Selector中选择tyrival，可以看到core=tyrival的信息</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-4-配置"><a href="#2-4-配置" class="headerlink" title="2.4 配置"></a>2.4 配置</h3><ul>
+<li>下载postgres的驱动，此处用postgresql-42.2.2.jar，复制到<code>~/Documents/Workspace/Docker/Solr/lib</code>中</li>
+<li>将工程<code>solr-7.4.0/example/example-DIH/solr/db/conf/db-data-config.xml</code>，复制到<code>~/Documents/Workspace/Docker/Solr/conf</code>中，并编辑此文件</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dataConfig</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 数据库驱动，地址，用户名，密码 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">"JdbcDataSource"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">driver</span>=<span class="string">"org.postgresql.Driver"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">url</span>=<span class="string">"jdbc:postgresql://192.168.0.179:5432/postgres"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">user</span>=<span class="string">"postgres"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">password</span>=<span class="string">"123"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">document</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 索引country表 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">entity</span> <span class="attr">name</span>=<span class="string">"country"</span> <span class="attr">query</span>=<span class="string">"select * from COUNTRY"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">document</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dataConfig</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>在数据库建表</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> country</span><br><span class="line">(</span><br><span class="line">  <span class="keyword">id</span>        <span class="built_in">integer</span>     <span class="keyword">not</span> <span class="literal">null</span>  <span class="keyword">constraint</span> country_pkey primary <span class="keyword">key</span>,</span><br><span class="line">  <span class="keyword">name</span>      <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">  name_en   <span class="built_in">varchar</span>(<span class="number">100</span>),</span><br><span class="line">  continent <span class="built_in">varchar</span>(<span class="number">50</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">table</span> country</span><br><span class="line"><span class="keyword">is</span> <span class="string">'国家表'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">unique</span> <span class="keyword">index</span> country_id_uindex</span><br><span class="line">  <span class="keyword">on</span> country (<span class="keyword">id</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> country (<span class="keyword">id</span>, <span class="keyword">name</span>, name_en, continent) <span class="keyword">values</span> (<span class="number">1</span>, <span class="string">'中华人民共和国'</span>, <span class="string">'Republic of China'</span>, <span class="string">'亚洲'</span>)</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> country (<span class="keyword">id</span>, <span class="keyword">name</span>, name_en, continent) <span class="keyword">values</span> (<span class="number">2</span>, <span class="string">'大不列颠及北爱尔兰联合王国'</span>, <span class="string">'United Kingdom of Great Britain and Northern Ireland'</span>, <span class="string">'欧洲'</span>)</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> country (<span class="keyword">id</span>, <span class="keyword">name</span>, name_en, continent) <span class="keyword">values</span> (<span class="number">3</span>, <span class="string">'德意志联邦共和国'</span>, <span class="string">'Federal Republic of Germany'</span>, <span class="string">'欧洲'</span>)</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> country (<span class="keyword">id</span>, <span class="keyword">name</span>, name_en, continent) <span class="keyword">values</span> (<span class="number">4</span>, <span class="string">'朝鲜民主主义人民共和国'</span>, <span class="string">'Democratic People''s Republic of Ko-rea'</span>, <span class="string">'亚洲'</span>)</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> country (<span class="keyword">id</span>, <span class="keyword">name</span>, name_en, continent) <span class="keyword">values</span> (<span class="number">5</span>, <span class="string">'法兰西共和国'</span>, <span class="string">'French Republic'</span>, <span class="string">'欧洲'</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>编辑<code>~/Documents/Workspace/Docker/Solr/conf/solrconfig.xml</code>，设置DataImportHandler</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 如果出现问题，就尝试把/dataimport写在/select之前 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">requestHandler</span> <span class="attr">name</span>=<span class="string">"/dataimport"</span> <span class="attr">class</span>=<span class="string">"solr.DataImportHandler"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">lst</span> <span class="attr">name</span>=<span class="string">"defaults"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">str</span> <span class="attr">name</span>=<span class="string">"config"</span>&gt;</span>db-data-config.xml<span class="tag">&lt;/<span class="name">str</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">lst</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">requestHandler</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">requestHandler</span> <span class="attr">name</span>=<span class="string">"/select"</span> <span class="attr">class</span>=<span class="string">"solr.SearchHandler"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">lst</span> <span class="attr">name</span>=<span class="string">"defaults"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">str</span> <span class="attr">name</span>=<span class="string">"echoParams"</span>&gt;</span>explicit<span class="tag">&lt;/<span class="name">str</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">int</span> <span class="attr">name</span>=<span class="string">"rows"</span>&gt;</span>10<span class="tag">&lt;/<span class="name">int</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>重启Solr</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker container stop [solr container id]</span><br><span class="line">$ docker container start [solr container id]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>浏览器打开<code>http://localhost:8983/solr</code>，进入Solr Admin，左侧菜单Core Selector选择tyrival，然后选择Schema功能</li>
+<li>点击右侧页面左上方的Add Field按钮，添加country表的name列</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">name: name</span><br><span class="line">## 此处需要注意，如果选择text_general等类型，会导致后面查询结果时，name的值为数组，而不是字符串</span><br><span class="line">## 会造成查询结果解析时报BindingException异常</span><br><span class="line">field type: string</span><br><span class="line">default: &apos;&apos;</span><br><span class="line">stored: 选中</span><br><span class="line">indexed: 选中</span><br></pre></td></tr></table></figure>
+<p>同样的方法添加name_en和continent列，然后可以在<code>~/Documents/Workspace/Docker/Solr/conf/managed_schema</code>中看到如下内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"continent"</span> <span class="attr">type</span>=<span class="string">"string"</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">stored</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">type</span>=<span class="string">"string"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">required</span>=<span class="string">"true"</span> <span class="attr">stored</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"name"</span> <span class="attr">type</span>=<span class="string">"string"</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">stored</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"name_en"</span> <span class="attr">type</span>=<span class="string">"string"</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">stored</span>=<span class="string">"true"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>此处如果主键名不是id，需要进行以下修改</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 将id修改为主键名 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uniqueKey</span>&gt;</span>id<span class="tag">&lt;/<span class="name">uniqueKey</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 改为required="false" --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">field</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">type</span>=<span class="string">"string"</span> <span class="attr">multiValued</span>=<span class="string">"false"</span> <span class="attr">indexed</span>=<span class="string">"true"</span> <span class="attr">required</span>=<span class="string">"true"</span> <span class="attr">stored</span>=<span class="string">"true"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>重启Solr</li>
+<li>刷新Solr Admin页面，左侧选择core=tyrival，选DataImport菜单，进入数据导入页面</li>
+<li>在数据导入页选全部导入Command=full-import，选择Entity=country，点击Execute，刷新页面，直到右侧出现绿色提示后，表示导入成功</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Indexing completed. Added/Updated: 5 documents. Deleted 0 documents.</span><br><span class="line">Requests: 1 , Fetched: 5 , Skipped: 0 , Processed: 5 </span><br><span class="line">Started: less than a minute ago</span><br></pre></td></tr></table></figure>
+<ul>
+<li>点击左侧菜单Query，进入查询页面，输入q=name_en:republic，点击Execute Query进行查询，可以查到相应的记录。</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"responseHeader"</span>:&#123;</span><br><span class="line">    <span class="attr">"status"</span>:<span class="number">0</span>,</span><br><span class="line">    <span class="attr">"QTime"</span>:<span class="number">49</span>,</span><br><span class="line">    <span class="attr">"params"</span>:&#123;</span><br><span class="line">      <span class="attr">"q"</span>:<span class="string">"name:*共和国*"</span>,</span><br><span class="line">      <span class="attr">"_"</span>:<span class="string">"1530684926303"</span>&#125;&#125;,</span><br><span class="line">  <span class="attr">"response"</span>:&#123;<span class="attr">"numFound"</span>:<span class="number">4</span>,<span class="attr">"start"</span>:<span class="number">0</span>,<span class="attr">"docs"</span>:[</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">"continent"</span>:<span class="string">"亚洲"</span>,</span><br><span class="line">        <span class="attr">"name"</span>:<span class="string">"中华人民共和国"</span>,</span><br><span class="line">        <span class="attr">"id"</span>:<span class="string">"1"</span>,</span><br><span class="line">        <span class="attr">"name_en"</span>:<span class="string">"Republic of China"</span>,</span><br><span class="line">        <span class="attr">"_version_"</span>:<span class="number">1605039455213715456</span>&#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">"continent"</span>:<span class="string">"欧洲"</span>,</span><br><span class="line">        <span class="attr">"name"</span>:<span class="string">"德意志联邦共和国"</span>,</span><br><span class="line">        <span class="attr">"id"</span>:<span class="string">"3"</span>,</span><br><span class="line">        <span class="attr">"name_en"</span>:<span class="string">"Federal Republic of Germany"</span>,</span><br><span class="line">        <span class="attr">"_version_"</span>:<span class="number">1605039455262998528</span>&#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">"continent"</span>:<span class="string">"亚洲"</span>,</span><br><span class="line">        <span class="attr">"name"</span>:<span class="string">"朝鲜民主主义人民共和国"</span>,</span><br><span class="line">        <span class="attr">"id"</span>:<span class="string">"4"</span>,</span><br><span class="line">        <span class="attr">"name_en"</span>:<span class="string">"Democratic People's Republic of Ko-rea"</span>,</span><br><span class="line">        <span class="attr">"_version_"</span>:<span class="number">1605039455264047104</span>&#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">"continent"</span>:<span class="string">"欧洲"</span>,</span><br><span class="line">        <span class="attr">"name"</span>:<span class="string">"法兰西共和国"</span>,</span><br><span class="line">        <span class="attr">"id"</span>:<span class="string">"5"</span>,</span><br><span class="line">        <span class="attr">"name_en"</span>:<span class="string">"French Republic"</span>,</span><br><span class="line">        <span class="attr">"_version_"</span>:<span class="number">1605039455265095680</span>&#125;]</span><br><span class="line">  &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-5-开发"><a href="#2-5-开发" class="headerlink" title="2.5 开发"></a>2.5 开发</h3><p>当solr部署完成后，可以进行二次开发，实现远程调用Solr应用，实现业务功能和solr引擎解耦，开发过程和user模块相似。</p>
+<h4 id="2-5-1-新建模块"><a href="#2-5-1-新建模块" class="headerlink" title="2.5.1 新建模块"></a>2.5.1 新建模块</h4><p>新建solr模块，并在根pom.xml中增加solr模块</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">modules</span>&gt;</span></span><br><span class="line">	...</span><br><span class="line">	<span class="tag">&lt;<span class="name">module</span>&gt;</span>solr<span class="tag">&lt;/<span class="name">module</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">modules</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-5-2-pom-xml"><a href="#2-5-2-pom-xml" class="headerlink" title="2.5.2 pom.xml"></a>2.5.2 pom.xml</h4><p>参考user模块的pom.xml修改，继承根pom.xml，并引入spring-boot-starter-data-solr</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- solr --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-solr<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-5-3-application-properties"><a href="#2-5-3-application-properties" class="headerlink" title="2.5.3 application.properties"></a>2.5.3 application.properties</h4><p>配置文件中增加solr应用的访问地址，最后加上core名称tyrival，工程中实际配置在开发环境配置文件<code>application-dev.properties</code>中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">## solr 服务器</span><br><span class="line">spring.data.solr.host=http://127.0.0.1:8983/solr/tyrival</span><br></pre></td></tr></table></figure>
+<h4 id="2-5-4-Country-java"><a href="#2-5-4-Country-java" class="headerlink" title="2.5.4 Country.java"></a>2.5.4 Country.java</h4><p>在common模块中创建实体时，必须加注解</p>
+<ul>
+<li>类加@SolrDocument注解，solrCoreName的值为core名称，即tyrival</li>
+<li>属性加@Field注解，如果表字段名与属性名不同，在@Field内标注表名</li>
+<li>主键属性加@Id注解</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.tyrival.entity.country;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.solr.client.solrj.beans.Field;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.annotation.Id;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.solr.core.mapping.Indexed;</span><br><span class="line"><span class="keyword">import</span> org.springframework.data.solr.core.mapping.SolrDocument;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SolrDocument</span>(solrCoreName = <span class="string">"tyrival"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Country</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * id</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@Field</span>(<span class="string">"id"</span>)</span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 名称</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Field</span>(<span class="string">"name"</span>)</span><br><span class="line">    <span class="meta">@Indexed</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 英文名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Field</span>(<span class="string">"name_en"</span>)</span><br><span class="line">    <span class="meta">@Indexed</span></span><br><span class="line">    <span class="keyword">private</span> String nameEn;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 所在州</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Field</span>(<span class="string">"continent"</span>)</span><br><span class="line">    <span class="meta">@Indexed</span></span><br><span class="line">    <span class="keyword">private</span> String continent;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/* getter &amp; setter */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-5-5-CountryServiceImpl-java"><a href="#2-5-5-CountryServiceImpl-java" class="headerlink" title="2.5.5 CountryServiceImpl.java"></a>2.5.5 CountryServiceImpl.java</h4><ul>
+<li>记得类要加@com.alibaba.dubbo.config.annotation.Service和@org.springframework.stereotype.Service注解</li>
+<li>SolrClient会被框架自动示例化注入</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="meta">@org</span>.springframework.stereotype.Service</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CountryServiceImpl</span> <span class="keyword">implements</span> <span class="title">CountryService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> SolrClient client;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Country&gt; <span class="title">listByPage</span><span class="params">(QueryParam queryParam)</span> </span>&#123;</span><br><span class="line">        SolrQuery query = <span class="keyword">new</span> SolrQuery();</span><br><span class="line">        <span class="keyword">int</span> pageIndex = queryParam.getPage().getPageIndex();</span><br><span class="line">        <span class="keyword">int</span> pageSize = queryParam.getPage().getPageSize();</span><br><span class="line">        <span class="comment">// 这里设置的是从第几条数据开始，而不是从第几页开始</span></span><br><span class="line">        query.setStart((pageIndex - <span class="number">1</span>) * pageSize);</span><br><span class="line">        query.setRows(pageSize);</span><br><span class="line">        StringBuffer buffer = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">        Object name = queryParam.getConditions().get(<span class="string">"name"</span>);</span><br><span class="line">        <span class="keyword">if</span> (name != <span class="keyword">null</span> &amp;&amp; StringUtils.isNotBlank(name.toString())) &#123;</span><br><span class="line">        	<span class="comment">// 此处需要在关键字两边加*号</span></span><br><span class="line">            buffer.append(<span class="string">"name:"</span>).append(<span class="string">"*"</span>).append(name.toString()).append(<span class="string">"*"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            buffer.append(<span class="string">"*:*"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        query.set(<span class="string">"q"</span>, buffer.toString());</span><br><span class="line">        QueryResponse response = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            response = client.query(query);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 如果之前在solr配置schema时，选择的type与Country类的属性类型不匹配的话</span></span><br><span class="line">        <span class="comment">// 这里会报BindingException异常，因为查询出的属性值会是一个数组，而不是一个基本类型</span></span><br><span class="line">        List&lt;Country&gt; list = response.getBeans(Country.class);</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://tyrival.github.io/posts/springboot-solr/" data-id="cjjch0b5h0005k9cw9z2u8cti" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/posts/springboot-elastic/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    SpringBoot(5)-基于Docker和Spring Boot部署开发Elastic
+                
+            </div>
+        </a>
+    
+    
+        <a href="/posts/springboot-aop/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">SpringBoot(2)-Spring Boot中的AOP</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+	<div id="commentContainer"></div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/后端/">后端</a></p>
+                            <p class="item-title"><a href="/posts/springboot-tesseract/" class="title">SpringBoot(6)-Spring Boot与Tesseract集成</a></p>
+                            <p class="item-date"><time datetime="2018-07-08T06:26:12.012Z" itemprop="datePublished">2018-07-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/后端/">后端</a></p>
+                            <p class="item-title"><a href="/posts/springboot-elastic/" class="title">SpringBoot(5)-基于Docker和Spring Boot部署开发Elastic</a></p>
+                            <p class="item-date"><time datetime="2018-07-08T06:25:55.743Z" itemprop="datePublished">2018-07-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/后端/">后端</a></p>
+                            <p class="item-title"><a href="/posts/springboot-solr/" class="title">SpringBoot(4)-基于Docker和Spring Boot部署开发Solr</a></p>
+                            <p class="item-date"><time datetime="2018-07-08T06:25:50.270Z" itemprop="datePublished">2018-07-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/后端/">后端</a></p>
+                            <p class="item-title"><a href="/posts/springboot-aop/" class="title">SpringBoot(2)-Spring Boot中的AOP</a></p>
+                            <p class="item-date"><time datetime="2018-07-08T06:25:37.774Z" itemprop="datePublished">2018-07-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/后端/">后端</a></p>
+                            <p class="item-title"><a href="/posts/springboot-dubbo-mybatis-redis/" class="title">SpringBoot(1)-基于Spring Boot、Dubbo、Redis、Mybtis搭建分布式开发项目</a></p>
+                            <p class="item-date"><time datetime="2018-06-19T00:49:02.129Z" itemprop="datePublished">2018-06-19</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/hadoop/">hadoop</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/前端/">前端</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/后端/">后端</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/服务器/">服务器</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/硬件/">硬件</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/f-k-ie/">f**k ie</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hadoop/">hadoop</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">12</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/less/">less</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/raspberry/">raspberry</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/server/">server</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/algorithm/" style="font-size: 13.33px;">algorithm</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/css/" style="font-size: 11.67px;">css</a> <a href="/tags/database/" style="font-size: 11.67px;">database</a> <a href="/tags/f-k-ie/" style="font-size: 13.33px;">f**k ie</a> <a href="/tags/git/" style="font-size: 11.67px;">git</a> <a href="/tags/hadoop/" style="font-size: 16.67px;">hadoop</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/javascript/" style="font-size: 20px;">javascript</a> <a href="/tags/less/" style="font-size: 10px;">less</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/raspberry/" style="font-size: 11.67px;">raspberry</a> <a href="/tags/server/" style="font-size: 18.33px;">server</a> <a href="/tags/swift/" style="font-size: 10px;">swift</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/vue/" style="font-size: 11.67px;">vue</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 Tyrival<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });
+        </script>
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
